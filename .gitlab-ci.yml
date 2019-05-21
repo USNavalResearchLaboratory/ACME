@@ -1,0 +1,46 @@
+before_script:
+  - python3 -m venv env
+  - source env/bin/activate
+  - pip3 install -r requirements.txt
+#  - rm -rf ~/.local/*
+
+cache:
+  paths:
+    - env/
+
+test_units:
+  stage: test
+  script:
+  - python3 -m unittest discover -s tests
+  tags:
+  - python3
+
+pages:
+  stage: deploy
+  script:
+  - cd docs
+  - make html
+  - mv build/html/ ../public/
+  artifacts:
+    paths:
+    - public
+  only:
+  - master
+  tags:
+  - python3
+
+compile_pdf:
+  stage: deploy
+  script:
+  - cd docs
+  - make latexpdf
+  artifacts:
+    paths:
+    - docs/build/latex/AbstractCommunicationsModelingEnvironment.pdf
+  tags:
+  - python3
+  - latex
+
+#after_script:
+#  - rm -rf ~/.local/*
+
