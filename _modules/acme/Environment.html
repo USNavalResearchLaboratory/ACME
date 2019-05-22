@@ -1,0 +1,632 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>acme.Environment &mdash; Abstract Communications Modeling Environment 1.0.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../_static/language_data.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Abstract Communications Modeling Environment
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../distribution.html">1. Distribution and Release Information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../license.html">2. License Information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../readme.html">3. Introduction and Description</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html">4. Application Programming Interface (API)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../documentation.html">5. Documentation</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Abstract Communications Modeling Environment</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>acme.Environment</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for acme.Environment</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">.coordinators.CommsCoordinator</span> <span class="k">import</span> <span class="n">CommsCoordinator</span>
+<span class="kn">from</span> <span class="nn">.platforms.CommsPlatform</span> <span class="k">import</span> <span class="n">CommsPlatform</span>
+<span class="kn">from</span> <span class="nn">.platforms.DisruptorPlatform</span> <span class="k">import</span> <span class="n">DisruptorPlatform</span>
+<span class="kn">import</span> <span class="nn">queue</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<div class="viewcode-block" id="Environment"><a class="viewcode-back" href="../../api/environment.html#acme.Environment.Environment">[docs]</a><span class="k">class</span> <span class="nc">Environment</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Implements the physical layer propagation model.</span>
+<span class="sd">    </span>
+<span class="sd">    Creates an RF communications environment whose frequency space is </span>
+<span class="sd">    divided into bins, and time is divided into steps and epochs.</span>
+<span class="sd">    Ensures all `Communications and Disruptor Platforms` and </span>
+<span class="sd">    `Communications Coordinators` are in lock-step and updated </span>
+<span class="sd">    appropriately.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    commsPlatforms : tuple of :class:`.CommsPlatform`</span>
+<span class="sd">        The tuple of `Communications Platforms`.</span>
+<span class="sd">    commsPlatformIDs : tuple</span>
+<span class="sd">        The tuple containing the identification attribute :attr:`.id` </span>
+<span class="sd">        for all platforms in :attr:`commsPlatforms`.</span>
+<span class="sd">    numCommsPlatforms : int</span>
+<span class="sd">        The number of `Communication Platforms` (i.e., length of :attr:`commsPlatforms`).</span>
+<span class="sd">    disruptorPlatforms : tuple of :class:`.DisruptorPlatform`</span>
+<span class="sd">        The tuple of `Disruptor Platforms`.</span>
+<span class="sd">    disruptorPlatformIDs : tuple</span>
+<span class="sd">        The tuple containing the identification attribute :attr:`.id` </span>
+<span class="sd">        for all platforms in :attr:`disruptorPlatforms`.</span>
+<span class="sd">    numDisruptorPlatforms : int</span>
+<span class="sd">        The number of `Disruptor Platforms` (i.e., length of :attr:`disruptorPlatforms`).</span>
+<span class="sd">    numFrequencyBins : int</span>
+<span class="sd">        The number of frequency bins.</span>
+<span class="sd">    disruptorDelay : int</span>
+<span class="sd">        The number of time steps behind the current time step which </span>
+<span class="sd">        `Disruptor Platforms` observe the status of the `Environment`.</span>
+<span class="sd">    coordinator : list of :class:`.CommsCoordinator`</span>
+<span class="sd">        The list of `Communications Coordinators`.</span>
+<span class="sd">    elapsedTime : float</span>
+<span class="sd">        The number of simulated seconds that have passed since the </span>
+<span class="sd">        simulation began.</span>
+<span class="sd">    data : list of lists</span>
+<span class="sd">        The current status of the frequency bins.</span>
+<span class="sd">        The outer list has length ``len(``:attr:`coordinator` ``) + len(``:attr:`disruptorPlatforms` ``)``.</span>
+<span class="sd">        Each outer list contains an inner list of length :attr:`numFrequencyBins`.</span>
+<span class="sd">        Each element of each inner list will contain an :class:`.EmissionObj` or ``None``.</span>
+<span class="sd">    adjMatrix : numpy.ndarray</span>
+<span class="sd">        The adjacency matrix denoting one-way active links among </span>
+<span class="sd">        `Communications and Disruptor Platforms`.  This matrix is square </span>
+<span class="sd">        (but not necessarily symmetric), </span>
+<span class="sd">        with each element of the matrix being ``True`` or ``False``.</span>
+<span class="sd">        Each dimension of the matrix is (:attr:`numCommsPlatforms` + :attr:`numDisruptorPlatforms`).</span>
+<span class="sd">        If element :math:`(m,n)` in the matrix is ``True``, then:</span>
+
+<span class="sd">        =========================== =========================== =======================================================</span>
+<span class="sd">                            Platform Type                       Description</span>
+<span class="sd">        ------------------------------------------------------- -------------------------------------------------------</span>
+<span class="sd">        :math:`m`                   :math:`n`</span>
+<span class="sd">        =========================== =========================== =======================================================</span>
+<span class="sd">        :class:`.CommsPlatform`     :class:`.CommsPlatform`     :math:`m` can transmit to :math:`n`</span>
+<span class="sd">        :class:`.CommsPlatform`     :class:`.DisruptorPlatform` :math:`n` can observe transmissions of :math:`m`</span>
+<span class="sd">        :class:`.DisruptorPlatform` :class:`.CommsPlatform`     :math:`m` can interfere with :math:`n`</span>
+<span class="sd">        :class:`.DisruptorPlatform` :class:`.DisruptorPlatform` :math:`n` can observe interference actions of :math:`m`</span>
+<span class="sd">        =========================== =========================== =======================================================</span>
+<span class="sd">    </span>
+
+<span class="sd">    Note</span>
+<span class="sd">    ----</span>
+<span class="sd">    Having a :attr:`disruptorDelay` = 0 does not currently make sense.</span>
+<span class="sd">    Specifically, it could introduce a race condition among `Disruptor </span>
+<span class="sd">    Platforms`.  For example, the first `Disruptor Platform` to make a </span>
+<span class="sd">    decision on how to allocate `disruption tokens` would do so </span>
+<span class="sd">    without any knowledge of actions by other `Disruption Platforms`. </span>
+<span class="sd">    Then, the second `Disruption Platform` would be able to observe </span>
+<span class="sd">    the actions of the first `Disruption Platform` but not those of </span>
+<span class="sd">    any subsequent `Disruption Platforms`, and so forth.</span>
+<span class="sd">    Therefore, by having :attr:`disruptorDelay` at least equal to 1 </span>
+<span class="sd">    ensures that all `Disruptor Platforms` use the same knowledge and </span>
+<span class="sd">    observations to make their decisions.</span>
+<span class="sd">    Alternatively, this race condition could be avoided even with a </span>
+<span class="sd">    delay of 0 by having all `Disruptor Platforms` act independently </span>
+<span class="sd">    of each other (assuming each took no action in the current time </span>
+<span class="sd">    step).</span>
+
+<span class="sd">    Additionally, without a delay of at least 1, then the </span>
+<span class="sd">    `Communications Coordinator` could potentially have no chance at </span>
+<span class="sd">    transmitting any packets successfully through the `Environment`, </span>
+<span class="sd">    as any `Disruptor Platform` would immediately observe the attempted </span>
+<span class="sd">    packet transmission and have the opportunity to interfere with it. </span>
+<span class="sd">    Therefore, for `Disruptor Platforms` to be successful, they must </span>
+<span class="sd">    wisely use prediction to allocate `disruption tokens`.</span>
+
+<span class="sd">    Note</span>
+<span class="sd">    ----</span>
+<span class="sd">    :attr:`commsPlatformIDs` and :attr:`disruptorPlatformIDs` are not </span>
+<span class="sd">    guaranteed to have jointly unique entries, but only unique entries </span>
+<span class="sd">    amongst themselves separately.</span>
+
+<span class="sd">    Note</span>
+<span class="sd">    ----</span>
+<span class="sd">    The `Environment` currently implements multi-cast, where if a </span>
+<span class="sd">    platform transmits a packet to multiple other platforms, only </span>
+<span class="sd">    a single :class:`.EmissionObj` is placed in the `Environment` and </span>
+<span class="sd">    it will be received by multiple platforms.</span>
+
+<span class="sd">    Todo</span>
+<span class="sd">    ----</span>
+<span class="sd">    Add support for multiple `Communications Coordinators`.</span>
+<span class="sd">    </span>
+<span class="sd">    Todo</span>
+<span class="sd">    ----</span>
+<span class="sd">    Allow :attr:`adjMatrix` to be modified automatically as a function of pair-wise platform range.</span>
+
+<span class="sd">    Todo</span>
+<span class="sd">    ----</span>
+<span class="sd">    Add `spatial degree of freedom` in `Environment`. </span>
+<span class="sd">    Currently, all `platforms` share a common set of frequency bins. </span>
+<span class="sd">    Instead, `platforms` that have significant distance between them </span>
+<span class="sd">    are practically unable to be directly connected and could share </span>
+<span class="sd">    the same frequency bins without interfering with each other.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+
+<div class="viewcode-block" id="Environment.__init__"><a class="viewcode-back" href="../../api/environment.html#acme.Environment.Environment.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span> <span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">theAdjMatrix</span><span class="p">,</span> <span class="n">theCommsPlatforms</span> <span class="o">=</span> <span class="p">(),</span> <span class="n">theDisruptorPlatforms</span> <span class="o">=</span> <span class="p">(),</span> <span class="n">theNumFrequencyBins</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">theDisruptorDelay</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">theMediumAccessMethod</span><span class="o">=</span><span class="s2">&quot;rr&quot;</span><span class="p">,</span> <span class="n">theSlidingWindow</span><span class="o">=</span><span class="mf">0.0</span> <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        theAdjMatrix : numpy.ndarray</span>
+<span class="sd">            The adjacency matrix indicating platform connectivity.</span>
+<span class="sd">        theCommsPlatforms : tuple of :class:`.CommsPlatform`</span>
+<span class="sd">            The `Communications Platforms` to be included in the </span>
+<span class="sd">            simulation (default ()).</span>
+<span class="sd">        theDisruptorPlatforms : tuple of :class:`.DisruptorPlatform`</span>
+<span class="sd">            The `Disruptor Platforms` to be included in the </span>
+<span class="sd">            simulation (default ()).</span>
+<span class="sd">        theNumFrequencyBins : int</span>
+<span class="sd">            The number of frequency bins (default 10).</span>
+<span class="sd">        theDisruptorDelay : int</span>
+<span class="sd">            The number of time steps behind the current time step which </span>
+<span class="sd">            `Disruptor Platforms` observe the status of the `Environment` </span>
+<span class="sd">            (default 1).</span>
+<span class="sd">        theMediumAccessMethod : {&#39;rr&#39;, &#39;tdma&#39;, &#39;fdma&#39;}</span>
+<span class="sd">            The medium access control method for the `Communications </span>
+<span class="sd">            Coordinator` (default &#39;rr&#39;).</span>
+<span class="sd">        theSlidingWindow : float</span>
+<span class="sd">            The number of seconds over which :attr:`trafficStatistics` is </span>
+<span class="sd">            computed (default 0.0).</span>
+<span class="sd">            If equal to 0.0, then :attr:`trafficStatistics` is computed </span>
+<span class="sd">            for the entire simulation.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        <span class="c1"># Specify the communications platforms in the environment</span>
+        <span class="k">assert</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">theCommsPlatforms</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">tuple</span><span class="p">),</span> <span class="s1">&#39;CommsPlatforms is not a tuple&#39;</span>
+        <span class="k">assert</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">item</span><span class="p">)</span> <span class="ow">is</span> <span class="n">CommsPlatform</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">theCommsPlatforms</span><span class="p">),</span> <span class="s1">&#39;CommsPlatforms are not the correct object type&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">commsPlatforms</span> <span class="o">=</span> <span class="n">theCommsPlatforms</span>
+        <span class="c1"># Gather communications platform IDs</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">commsPlatformIDs</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">([</span><span class="n">thePlatform</span><span class="o">.</span><span class="n">id</span> <span class="k">for</span> <span class="n">thePlatform</span> <span class="ow">in</span> <span class="n">theCommsPlatforms</span><span class="p">])</span>
+        <span class="c1"># Ensure communications platform IDs are unique</span>
+        <span class="n">thePlatformIDs</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">commsPlatformIDs</span><span class="p">)</span>
+        <span class="k">assert</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">thePlatformIDs</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">commsPlatforms</span><span class="p">)),</span> <span class="s2">&quot;Communications platform IDs are not unique!&quot;</span>
+        <span class="c1"># Compute number of communications platforms</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">numCommsPlatforms</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">commsPlatforms</span><span class="p">)</span>
+
+        <span class="c1"># Specify the disruptors in the environment</span>
+        <span class="k">assert</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">theDisruptorPlatforms</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">tuple</span><span class="p">),</span> <span class="s1">&#39;DisruptorPlatforms is not a tuple&#39;</span>
+        <span class="k">assert</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">item</span><span class="p">)</span> <span class="ow">is</span> <span class="n">DisruptorPlatform</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">theDisruptorPlatforms</span><span class="p">),</span> <span class="s1">&#39;DisruptorPlatforms are not the correct object type&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">disruptorPlatforms</span> <span class="o">=</span> <span class="n">theDisruptorPlatforms</span>
+        <span class="c1"># Gather disruptor platform IDs</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">disruptorPlatformIDs</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">([</span><span class="n">thePlatform</span><span class="o">.</span><span class="n">id</span> <span class="k">for</span> <span class="n">thePlatform</span> <span class="ow">in</span> <span class="n">theDisruptorPlatforms</span><span class="p">])</span>
+        <span class="c1"># Ensure disruptor platform IDs are unique</span>
+        <span class="n">thePlatformIDs</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">disruptorPlatformIDs</span><span class="p">)</span>
+        <span class="k">assert</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">thePlatformIDs</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">disruptorPlatforms</span><span class="p">)),</span> <span class="s2">&quot;Disruptor platform IDs are not unique!&quot;</span>
+        <span class="c1"># Compute number of communications platforms</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">numDisruptorPlatforms</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">disruptorPlatforms</span><span class="p">)</span>
+        
+        <span class="c1"># Specify the global connectivity/adjacency matrix</span>
+        <span class="k">assert</span><span class="p">(</span><span class="n">theAdjMatrix</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">numCommsPlatforms</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">numDisruptorPlatforms</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">numCommsPlatforms</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">numDisruptorPlatforms</span><span class="p">)),</span> <span class="s2">&quot;Size of adjacency matrix must match number of Comms and Disruptor Platforms provided&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">adjMatrix</span> <span class="o">=</span> <span class="n">theAdjMatrix</span>
+
+        <span class="c1"># Specify the number of discrete frequency bins in the environment</span>
+        <span class="k">if</span> <span class="n">theNumFrequencyBins</span> <span class="o">&lt;</span> <span class="mi">1</span> <span class="ow">or</span> <span class="nb">type</span><span class="p">(</span><span class="n">theNumFrequencyBins</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="nb">int</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Number of frequency bins must be an integer greater than zero.&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">numFrequencyBins</span> <span class="o">=</span> <span class="n">theNumFrequencyBins</span>
+
+        <span class="c1"># Instantiate communications coordinator</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">coordinator</span> <span class="o">=</span> <span class="p">[</span><span class="n">CommsCoordinator</span><span class="p">(</span><span class="n">theCommsPlatforms</span><span class="p">,</span> <span class="n">theNumFrequencyBins</span><span class="p">,</span> <span class="n">theMediumAccessMethod</span><span class="p">)]</span>
+        <span class="c1"># TODO: This is a list to support multiple CommsCoordinators in the future</span>
+
+        <span class="c1"># Initialize data for all frequencies</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">coordinator</span><span class="p">)</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">disruptorPlatforms</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">coordinator</span><span class="p">)):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="n">theNumFrequencyBins</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">disruptorPlatforms</span><span class="p">)):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">coordinator</span><span class="p">)]</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="n">theNumFrequencyBins</span>
+
+        <span class="c1"># Specify the delay in number of time steps which the disruptors observe the status of the Environment</span>
+        <span class="k">assert</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">theDisruptorDelay</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">int</span> <span class="ow">and</span> <span class="n">theDisruptorDelay</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">),</span> <span class="s1">&#39;DisruptorDelay is not a positive integer&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">disruptorDelay</span> <span class="o">=</span> <span class="n">theDisruptorDelay</span>
+        <span class="c1"># Initialize queue for environment status</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__dataQueue</span> <span class="o">=</span> <span class="n">queue</span><span class="o">.</span><span class="n">Queue</span><span class="p">(</span><span class="n">theDisruptorDelay</span><span class="p">)</span>
+        <span class="c1"># self.__dataQueue.put([self.data, [self.data] * len(self.disruptorPlatforms)])</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">theDisruptorDelay</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__dataQueue</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__copyEnv</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">))</span>
+        
+        <span class="c1"># Specify the sliding window size (in seconds) for traffic statistics</span>
+        <span class="k">assert</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">theSlidingWindow</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">float</span> <span class="ow">and</span> <span class="n">theSlidingWindow</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">),</span> <span class="s1">&#39;Sliding window size is not a non-negative floating point number&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">windowSize</span> <span class="o">=</span> <span class="n">theSlidingWindow</span>
+        <span class="c1"># Initialize traffic statistics matrix</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__trafficTx</span> <span class="o">=</span> <span class="p">[</span> <span class="p">[</span> <span class="p">[]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">commsPlatforms</span><span class="p">))</span> <span class="p">]</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">commsPlatforms</span><span class="p">))</span> <span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__trafficRx</span> <span class="o">=</span> <span class="p">[</span> <span class="p">[</span> <span class="p">[]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">commsPlatforms</span><span class="p">))</span> <span class="p">]</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">commsPlatforms</span><span class="p">))</span> <span class="p">]</span>
+        
+        <span class="c1"># Update platform connectivity according to adjacency matrix</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__updatePlatformConnectivity</span><span class="p">()</span>
+
+        <span class="c1"># Initialize total elapsed simulation time</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">elapsedTime</span> <span class="o">=</span> <span class="mi">0</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">trafficStatistics</span> <span class="p">(</span> <span class="bp">self</span> <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Compute the current packet/traffic statistics across all pairs </span>
+<span class="sd">        of `Communications Platforms`.</span>
+<span class="sd">        The :math:`(m,n)` element is the ratio of packets successfully </span>
+<span class="sd">        received by platform :math:`n` from platform :math:`m` divided </span>
+<span class="sd">        by the number of packets transmitted by platform :math:`m` </span>
+<span class="sd">        intended for platform :math:`n`.</span>
+<span class="sd">        This ratio accounts for both `disruption tokens` from </span>
+<span class="sd">        `Disruption Platforms` and the `adjacency matrix` not allowing </span>
+<span class="sd">        transmissions to be delivered.</span>
+<span class="sd">        Matrix is square, but not necessarily symmetric.</span>
+<span class="sd">        Each dimension of the matrix is :attr:`numCommsPlatforms`.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        statMatrix : numpy.ndarray</span>
+<span class="sd">            The traffic statistics matrix.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">statMatrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">numCommsPlatforms</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">numCommsPlatforms</span><span class="p">),</span> <span class="mf">0.0</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">sourcePlatformIndex</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">numCommsPlatforms</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">destPlatformIndex</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">numCommsPlatforms</span><span class="p">):</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__trafficTx</span><span class="p">[</span><span class="n">sourcePlatformIndex</span><span class="p">][</span><span class="n">destPlatformIndex</span><span class="p">]:</span>
+                    <span class="n">statMatrix</span><span class="p">[</span><span class="n">sourcePlatformIndex</span><span class="p">,</span><span class="n">destPlatformIndex</span><span class="p">]</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__trafficRx</span><span class="p">[</span><span class="n">sourcePlatformIndex</span><span class="p">][</span><span class="n">destPlatformIndex</span><span class="p">])</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__trafficTx</span><span class="p">[</span><span class="n">sourcePlatformIndex</span><span class="p">][</span><span class="n">destPlatformIndex</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">statMatrix</span>
+
+<div class="viewcode-block" id="Environment.step"><a class="viewcode-back" href="../../api/environment.html#acme.Environment.Environment.step">[docs]</a>    <span class="k">def</span> <span class="nf">step</span> <span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">deltaT</span> <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Advance the simulation by ``deltaT`` seconds and onto the next </span>
+<span class="sd">        time step.</span>
+
+<span class="sd">        Updates position, velocity, and acceleration of all platforms.</span>
+<span class="sd">        Updates platform connectivity in case :attr:`adjMatrix` has been </span>
+<span class="sd">        changed by the user since the last time step.</span>
+<span class="sd">        Obtains all `Packets` from all `Communications Coordinators` and </span>
+<span class="sd">        all `disruption tokens` from all `Disruptor Platforms`, </span>
+<span class="sd">        and places them in the designated frequency bins.</span>
+<span class="sd">        Delivers all `Packets` and `disruption tokens` to their </span>
+<span class="sd">        intended recipients.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        deltaT : float</span>
+<span class="sd">            The number of seconds to advance the simulation by.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># Update position, velocity, and acceleration of all platforms</span>
+        <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">commsPlatforms</span><span class="p">:</span>
+            <span class="n">p</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">deltaT</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">disruptorPlatforms</span><span class="p">:</span>
+            <span class="n">p</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">deltaT</span><span class="p">)</span>
+        
+        <span class="c1"># Update platform connectivity according to adjacency matrix</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__updatePlatformConnectivity</span><span class="p">()</span>
+        
+        <span class="c1"># Update elapsed simulation time</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">elapsedTime</span> <span class="o">+=</span> <span class="n">deltaT</span>
+
+        <span class="c1"># Obtain data for all frequencies from coordinator</span>
+        <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">coordinator</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+
+        <span class="c1"># Update disruptors with Environment frequency allocation status</span>
+        <span class="n">theEnv</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dataQueue</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+        <span class="c1"># theEnvComm = theEnv[0:len(self.coordinator)]</span>
+        <span class="c1"># theEnvDisruptor = theEnv[len(self.coordinator):len(theEnv)]</span>
+        <span class="k">for</span> <span class="n">disruptorIndex</span><span class="p">,</span> <span class="n">disruptor</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">disruptorPlatforms</span><span class="p">):</span>
+            <span class="c1"># Create copy of environment list for this disruptor</span>
+            <span class="n">theEnvTemp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__copyEnv</span><span class="p">(</span><span class="n">theEnv</span><span class="p">)</span>
+            <span class="c1"># Remove packets from Comms Platforms that this disruptor cannot observe</span>
+            <span class="k">for</span> <span class="n">cIndex</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">coordinator</span><span class="p">)):</span>
+                <span class="n">cData</span> <span class="o">=</span> <span class="n">theEnvTemp</span><span class="p">[</span><span class="n">cIndex</span><span class="p">]</span>
+                <span class="k">for</span> <span class="n">packetIndex</span><span class="p">,</span> <span class="n">packet</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">cData</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="n">packet</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="n">theSourceID</span> <span class="o">=</span> <span class="n">packet</span><span class="o">.</span><span class="n">sourceID</span>
+                        <span class="n">theSourceIndex</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">commsPlatformIDs</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">theSourceID</span><span class="p">)</span>
+                        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">adjMatrix</span><span class="p">[</span><span class="n">theSourceIndex</span><span class="p">,</span> <span class="n">disruptorIndex</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">numCommsPlatforms</span><span class="p">]:</span>
+                            <span class="n">cData</span><span class="p">[</span><span class="n">packetIndex</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="c1"># Remove emission objects from other disruptors that this disruptor cannot observe</span>
+            <span class="k">for</span> <span class="n">dIndex</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">numDisruptorPlatforms</span><span class="p">):</span>
+                <span class="n">dData</span> <span class="o">=</span> <span class="n">theEnvTemp</span><span class="p">[</span><span class="n">dIndex</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">coordinator</span><span class="p">)]</span>
+                <span class="k">for</span> <span class="n">emissionIndex</span><span class="p">,</span> <span class="n">emission</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">dData</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="n">emission</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="n">theSourceID</span> <span class="o">=</span> <span class="n">emission</span><span class="o">.</span><span class="n">sourceID</span>
+                        <span class="n">theSourceIndex</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">disruptorPlatformIDs</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">theSourceID</span><span class="p">)</span>
+                        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">adjMatrix</span><span class="p">[</span><span class="n">theSourceIndex</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">numCommsPlatforms</span><span class="p">,</span> <span class="n">disruptorIndex</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">numCommsPlatforms</span><span class="p">]:</span>
+                            <span class="n">dData</span><span class="p">[</span><span class="n">emissionIndex</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="c1"># Update this disruptor&#39;s view of the Environment</span>
+            <span class="n">disruptor</span><span class="o">.</span><span class="n">env</span> <span class="o">=</span> <span class="n">theEnvTemp</span>
+
+        <span class="c1"># Obtain disruptions from all disruptor platforms</span>
+        <span class="k">for</span> <span class="n">pIndex</span><span class="p">,</span> <span class="n">p</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">disruptorPlatforms</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">pIndex</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">coordinator</span><span class="p">)]</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">getDisruptions</span><span class="p">()</span>
+
+        <span class="c1"># Add actions from CommsCoordinator and Disruptors to history queue</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__dataQueue</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__copyEnv</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">))</span>
+        <span class="k">assert</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__dataQueue</span><span class="o">.</span><span class="n">full</span><span class="p">()),</span> <span class="s2">&quot;Environment history queue should always be full!&quot;</span>
+        
+        <span class="c1"># Send data to each communication platform</span>
+        <span class="n">txData</span> <span class="o">=</span> <span class="p">[</span><span class="nb">list</span><span class="p">()</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">numCommsPlatforms</span><span class="p">)]</span>
+        <span class="k">for</span> <span class="n">platformData</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">emissionObj</span> <span class="ow">in</span> <span class="n">platformData</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">emissionObj</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="c1"># Record time emission object was transmitted into the Environment</span>
+                    <span class="n">emissionObj</span><span class="o">.</span><span class="n">emissionTime</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">elapsedTime</span>
+                
+                    <span class="k">for</span> <span class="n">destID</span> <span class="ow">in</span> <span class="n">emissionObj</span><span class="o">.</span><span class="n">destID</span><span class="p">:</span>
+                        <span class="k">try</span><span class="p">:</span>
+                            <span class="n">destPlatformIndex</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">commsPlatformIDs</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">destID</span><span class="p">)</span>
+                            <span class="k">if</span> <span class="n">emissionObj</span><span class="o">.</span><span class="n">sourceType</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                                <span class="n">sourcePlatformIndex</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">commsPlatformIDs</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">emissionObj</span><span class="o">.</span><span class="n">sourceID</span><span class="p">)</span>
+                                <span class="c1"># Add packet to matrix keeping track of all traffic</span>
+                                <span class="bp">self</span><span class="o">.</span><span class="n">__trafficTx</span><span class="p">[</span><span class="n">sourcePlatformIndex</span><span class="p">][</span><span class="n">destPlatformIndex</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">emissionObj</span><span class="p">)</span>
+                            <span class="k">elif</span> <span class="n">emissionObj</span><span class="o">.</span><span class="n">sourceType</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                                <span class="n">sourcePlatformIndex</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">disruptorPlatformIDs</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">emissionObj</span><span class="o">.</span><span class="n">sourceID</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">numCommsPlatforms</span>
+                            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">adjMatrix</span><span class="p">[</span><span class="n">sourcePlatformIndex</span><span class="p">,</span><span class="n">destPlatformIndex</span><span class="p">]:</span>
+                                <span class="n">txData</span><span class="p">[</span><span class="n">destPlatformIndex</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">emissionObj</span><span class="p">)</span>
+                        <span class="k">except</span><span class="p">:</span>
+                            <span class="k">pass</span>
+        <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">commPlatform</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">commsPlatforms</span><span class="p">):</span>
+            <span class="n">commPlatform</span><span class="o">.</span><span class="n">putData</span><span class="p">(</span><span class="n">txData</span><span class="p">[</span><span class="n">index</span><span class="p">])</span>
+        
+        <span class="c1"># Update traffic statistics</span>
+        <span class="k">for</span> <span class="n">destPlatformIndex</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">numCommsPlatforms</span><span class="p">):</span>
+            <span class="n">isDisrupted</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="k">for</span> <span class="n">emissionObj</span> <span class="ow">in</span> <span class="n">txData</span><span class="p">[</span><span class="n">destPlatformIndex</span><span class="p">]:</span>
+                <span class="k">if</span> <span class="n">emissionObj</span><span class="o">.</span><span class="n">sourceType</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="n">isDisrupted</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">for</span> <span class="n">emissionObj</span> <span class="ow">in</span> <span class="n">txData</span><span class="p">[</span><span class="n">destPlatformIndex</span><span class="p">]:</span>
+                <span class="k">if</span> <span class="n">emissionObj</span><span class="o">.</span><span class="n">sourceType</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">sourcePlatformIndex</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">commsPlatformIDs</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">emissionObj</span><span class="o">.</span><span class="n">sourceID</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="n">isDisrupted</span><span class="p">:</span>
+                        <span class="c1"># Add packet to matrix keeping track of traffic that is successfully transmitted and received</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">__trafficRx</span><span class="p">[</span><span class="n">sourcePlatformIndex</span><span class="p">][</span><span class="n">destPlatformIndex</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">emissionObj</span><span class="p">)</span>
+        
+        <span class="c1"># Remove traffic statistics outside of sliding window</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">windowSize</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">sourcePlatformIndex</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">numCommsPlatforms</span><span class="p">):</span>
+                <span class="k">for</span> <span class="n">destPlatformIndex</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">numCommsPlatforms</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__trafficTx</span><span class="p">[</span><span class="n">sourcePlatformIndex</span><span class="p">][</span><span class="n">destPlatformIndex</span><span class="p">]:</span>
+                        <span class="k">while</span> <span class="bp">self</span><span class="o">.</span><span class="n">elapsedTime</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">__trafficTx</span><span class="p">[</span><span class="n">sourcePlatformIndex</span><span class="p">][</span><span class="n">destPlatformIndex</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">emissionTime</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">windowSize</span><span class="p">:</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">__trafficTx</span><span class="p">[</span><span class="n">sourcePlatformIndex</span><span class="p">][</span><span class="n">destPlatformIndex</span><span class="p">]</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+                            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__trafficTx</span><span class="p">[</span><span class="n">sourcePlatformIndex</span><span class="p">][</span><span class="n">destPlatformIndex</span><span class="p">])</span> <span class="ow">is</span> <span class="mi">0</span><span class="p">:</span>
+                                <span class="k">break</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__trafficRx</span><span class="p">[</span><span class="n">sourcePlatformIndex</span><span class="p">][</span><span class="n">destPlatformIndex</span><span class="p">]:</span>
+                        <span class="k">while</span> <span class="bp">self</span><span class="o">.</span><span class="n">elapsedTime</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">__trafficRx</span><span class="p">[</span><span class="n">sourcePlatformIndex</span><span class="p">][</span><span class="n">destPlatformIndex</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">emissionTime</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">windowSize</span><span class="p">:</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">__trafficRx</span><span class="p">[</span><span class="n">sourcePlatformIndex</span><span class="p">][</span><span class="n">destPlatformIndex</span><span class="p">]</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+                            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__trafficRx</span><span class="p">[</span><span class="n">sourcePlatformIndex</span><span class="p">][</span><span class="n">destPlatformIndex</span><span class="p">])</span> <span class="ow">is</span> <span class="mi">0</span><span class="p">:</span>
+                                <span class="k">break</span></div>
+
+
+    <span class="k">def</span> <span class="nf">__updatePlatformConnectivity</span> <span class="p">(</span> <span class="bp">self</span> <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Update the :attr:`.destIDs` attribute for :class:`.CommsPlatforms` </span>
+<span class="sd">        and update the :attr:`.commsDestIDs` attribute for </span>
+<span class="sd">        :class:`.DisruptorPlatforms` according to the current values </span>
+<span class="sd">        in :attr:`adjMatrix`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># Update platform connectivity according to adjacency matrix</span>
+        <span class="k">for</span> <span class="n">pIndex</span><span class="p">,</span> <span class="n">p</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">commsPlatforms</span><span class="p">):</span>
+            <span class="c1"># Get platform list indices</span>
+            <span class="n">destIndices</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nonzero</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">adjMatrix</span><span class="p">[</span><span class="n">pIndex</span><span class="p">,</span> <span class="mi">0</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">numCommsPlatforms</span><span class="p">])[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="c1"># Convert from list index to ID</span>
+            <span class="n">p</span><span class="o">.</span><span class="n">destIDs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__indexToID</span><span class="p">(</span><span class="n">destIndices</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">pIndex</span><span class="p">,</span> <span class="n">p</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">disruptorPlatforms</span><span class="p">):</span>
+            <span class="c1"># Get platform list indices</span>
+            <span class="n">destIndices</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nonzero</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">adjMatrix</span><span class="p">[</span><span class="n">pIndex</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">numCommsPlatforms</span><span class="p">,</span> <span class="mi">0</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">numCommsPlatforms</span><span class="p">])[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="c1"># Convert from list index to ID</span>
+            <span class="n">p</span><span class="o">.</span><span class="n">commsDestIDs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__indexToID</span><span class="p">(</span><span class="n">destIndices</span><span class="p">)</span>
+    
+    <span class="k">def</span> <span class="nf">__indexToID</span> <span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">indices</span> <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Convert integer index into :attr:`commsPlatforms` to their </span>
+<span class="sd">        corresponding identification attributes :attr:`.id`.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        indices : list of int</span>
+<span class="sd">            The list of integer indices.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        IDs : list</span>
+<span class="sd">            The list of corresponding IDs.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">IDs</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">indices</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">indices</span><span class="p">)):</span>
+            <span class="n">IDs</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">commsPlatformIDs</span><span class="p">[</span><span class="n">indices</span><span class="p">[</span><span class="n">idx</span><span class="p">]]</span>
+            <span class="c1"># IDs[idx] = self.platforms[indices[idx]].id</span>
+        <span class="k">return</span> <span class="n">IDs</span>
+
+    <span class="k">def</span> <span class="nf">__copyEnv</span> <span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">theEnv</span> <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Make recursive copy of the environment status.</span>
+<span class="sd">        Emission objects themselves are not copied.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        theEnv : list of list</span>
+<span class="sd">            The environment status, in the same form as :attr:`data`.</span>
+<span class="sd">        </span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        theEnvCopy : list of list</span>
+<span class="sd">            The copy of the environment status.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># Make copy of top-level list</span>
+        <span class="n">theEnvCopy</span> <span class="o">=</span> <span class="n">theEnv</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="c1"># Make copy of second-level list</span>
+        <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">item</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">theEnv</span><span class="p">):</span>
+            <span class="n">theEnvCopy</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">theEnvCopy</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

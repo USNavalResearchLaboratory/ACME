@@ -1,0 +1,347 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>3. Introduction and Description &mdash; Abstract Communications Modeling Environment 1.0.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="4. Application Programming Interface (API)" href="api.html" />
+    <link rel="prev" title="2. License Information" href="license.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Abstract Communications Modeling Environment
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="distribution.html">1. Distribution and Release Information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="license.html">2. License Information</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">3. Introduction and Description</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#entities">3.1. Entities</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#communications-agent">3.1.1. Communications agent</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#communications-coordinator">3.1.2. Communications coordinator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#environment">3.1.3. Environment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#interference-source-disruptors">3.1.4. Interference source (Disruptors)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#constraints">3.2. Constraints</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#objectives">3.3. Objectives</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id1">3.3.1. Communications agent</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id2">3.3.2. Communications coordinator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id3">3.3.3. Environment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#interference-source">3.3.4. Interference source</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#notes-and-comments">3.4. Notes and Comments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#assumptions">3.5. Assumptions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#example-usage">3.6. Example usage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#unit-tests">3.7. Unit tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#todo-future-development">3.8. Todo – Future development</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">4. Application Programming Interface (API)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="documentation.html">5. Documentation</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Abstract Communications Modeling Environment</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>3. Introduction and Description</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/readme.md.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="introduction-and-description">
+<h1>3. Introduction and Description<a class="headerlink" href="#introduction-and-description" title="Permalink to this headline">¶</a></h1>
+<p>This repository contains the abstracted communications modelling environment (ACME), which is a library of classes and methods for simulating communications networks and potential sources of interference.</p>
+<p>Within this model, time and frequency are divided into discrete steps and bins, respectively.  Information or data is treated as discrete units.</p>
+<div class="section" id="entities">
+<h2>3.1. Entities<a class="headerlink" href="#entities" title="Permalink to this headline">¶</a></h2>
+<p>The model contains four entity types (i.e., platform types):</p>
+<div class="section" id="communications-agent">
+<h3>3.1.1. Communications agent<a class="headerlink" href="#communications-agent" title="Permalink to this headline">¶</a></h3>
+<p>This entity generates units of information, and then places the information units into its own queue for transmission.  If the transmit queue is full, then any newly generated units are discarded.
+Additionally, this entity receives units of information intended for itself, and then places the information units into its own receive queue.  Similarly to the transmit queue, if the receive queue if full, then any newly received units are discarded.</p>
+<p>At each time step, this entity’s primary action is to decide which unit of information from its transmission queue (if any) to present to the <a class="reference external" href="#communications-coordinator">Communications Coordinator</a>.  Additionally, at each time step, this entity may process any information units (if any) from its receive queue.</p>
+</div>
+<div class="section" id="communications-coordinator">
+<h3>3.1.2. Communications coordinator<a class="headerlink" href="#communications-coordinator" title="Permalink to this headline">¶</a></h3>
+<p>This entity implements a policy of mapping information units presented by one or multiple <a class="reference external" href="#communications-agent">Communications Agents</a> to the <a class="reference external" href="#environment">Environment</a>.
+This entity essentially models and represents the MAC protocols of the communications protocol stack.</p>
+<p>At each time step, this entity’s primary action is to select a subset of Communications Agents which have units of information to transmit by having non-empty transmit queues, take their units of information, and place their units of information into the Environment for delivery to their intended destinations.</p>
+</div>
+<div class="section" id="environment">
+<h3>3.1.3. Environment<a class="headerlink" href="#environment" title="Permalink to this headline">¶</a></h3>
+<p>This entity implements an abstracted physical layer model.
+This entity contains a fixed number of frequency bins, and each frequency bin may potentially contain one unit of information.</p>
+<p>At each time step, this entity’s primary action is to update the contents of frequency bins with units of information presented by the Communications Coordinator.
+Then, the entity passes and delivers the units of information to their intended recipients.</p>
+</div>
+<div class="section" id="interference-source-disruptors">
+<h3>3.1.4. Interference source (Disruptors)<a class="headerlink" href="#interference-source-disruptors" title="Permalink to this headline">¶</a></h3>
+<p>This entity has the ability to disrupt units of information and prevent them from being delivered to their intended recipients.
+This is accomplished by selecting the specific frequency bins within the Environment and times during which interference occurs. Interference is indicated by Disruption Tokens placed into the corresponding frequency bin.  Each interference source also has a configurable number of Disruption Tokens, meant to represent a finite resource (e.g., energy). ACME currently supports only random placement of Disruption Tokens. Alternative methods for subjecting the Environment to interference is at the discretion of the user.</p>
+</div>
+</div>
+<div class="section" id="constraints">
+<h2>3.2. Constraints<a class="headerlink" href="#constraints" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Communications Agents can only offer one unit of information per time step. However, this single unit of information has no further limitation, and may consist of any amount of data of any type.</p></li>
+<li><p>The Communications Coordinator must dispose of all units of information that it selects from Communications Agents. This means that the Communications Coordinator cannot accept any information units from Communications Agents that it cannot fit into the frequency bin space of the Environment.  In other words, the Communications Coordinator does not have its own internal buffer or queue for information units.</p></li>
+<li><p>Communications Agents must drop information units that coincide in time and frequency with Disruption Tokens.</p></li>
+<li><p>Time is divided into both steps and epochs, such that a time epoch contains a fixed integer number of time steps. At the beginning of each time epoch, the number of available Disruption Tokens resets.</p></li>
+</ul>
+</div>
+<div class="section" id="objectives">
+<h2>3.3. Objectives<a class="headerlink" href="#objectives" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id1">
+<h3>3.3.1. Communications agent<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Maximize the delivery of its own information units (units per time)</p></li>
+</ul>
+</div>
+<div class="section" id="id2">
+<h3>3.3.2. Communications coordinator<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Maximize the delivery of all information units throughout the network</p></li>
+</ul>
+</div>
+<div class="section" id="id3">
+<h3>3.3.3. Environment<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Faithfully pass and deliver information units and Disruption Tokens to correct recipients at each time step</p></li>
+</ul>
+</div>
+<div class="section" id="interference-source">
+<h3>3.3.4. Interference source<a class="headerlink" href="#interference-source" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Disrupt information units in frequency bins</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="notes-and-comments">
+<h2>3.4. Notes and Comments<a class="headerlink" href="#notes-and-comments" title="Permalink to this headline">¶</a></h2>
+<p>This is a simulation of different objectives by different entities. In principle, this could be simulated without any dialogue among them. Alternatively, if Communications Agents were able to talk with one another and/or with the Communications Coordinator (via an out-of-band mechanism), then different (and equally interesting) dynamics might arise.</p>
+<p>These entity models are deliberately configured to be extensible, by revisiting the assumptions below.</p>
+</div>
+<div class="section" id="assumptions">
+<h2>3.5. Assumptions<a class="headerlink" href="#assumptions" title="Permalink to this headline">¶</a></h2>
+<p>The following simplifying assumptions have been made within this model:</p>
+<ul class="simple">
+<li><p>Flat Earth model (platform positions are represented in cartesian coordinates).</p></li>
+<li><p>The network topology may be changed by the user between any time step.</p></li>
+<li><p>The Environment does not drop information units (i.e., they are perfectly delivered if the Agents are connected via the network topology). This can be reconsidered in later iterations.</p></li>
+<li><p>If Interference Sources were capable of agency and responding to the Environment, they would have perfect information about the Environment albeit with at least one time step of delay.</p></li>
+<li><p>Communications Coordinator is not able to directly observe Disruption Tokens but may infer their presence through the inability to transmit data through the Environment.</p></li>
+<li><p>Communications Platforms listen to all frequency bins in the Environment.</p></li>
+</ul>
+</div>
+<div class="section" id="example-usage">
+<h2>3.6. Example usage<a class="headerlink" href="#example-usage" title="Permalink to this headline">¶</a></h2>
+<p>An example script has been developed that demonstrates the primary capabilities of these models.  The entry point into this main program is run by executing:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python3</span> <span class="o">./</span><span class="n">runModel</span><span class="o">.</span><span class="n">py</span>
+</pre></div>
+</div>
+<p>This model has been tested to run successfully using Python 3.4.9 and 3.6.6.</p>
+</div>
+<div class="section" id="unit-tests">
+<h2>3.7. Unit tests<a class="headerlink" href="#unit-tests" title="Permalink to this headline">¶</a></h2>
+<p>This module contains a collection of unit tests in the <code class="docutils literal notranslate"><span class="pre">tests</span></code> directory.  All unit tests are run by executing:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python3</span> <span class="o">-</span><span class="n">m</span> <span class="n">unittest</span> <span class="n">discover</span> <span class="o">-</span><span class="n">s</span> <span class="o">./</span><span class="n">tests</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="todo-future-development">
+<h2>3.8. Todo – Future development<a class="headerlink" href="#todo-future-development" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Implement propagation and/or processing delay.  Currently, all Communications Agents receive their intended information units after 1 time step, regardless of platform positions.  Likewise, all Interference Sources observe the status of the Environment after a delay of a fixed number of time steps, regardless of platform positions.</p></li>
+<li><p>Implement a routing capability for Communications Agents (i.e., the ability to transmit information units via relaying through another Communications Agent).  Currently, all network topology links are only point-to-point.</p>
+<ul>
+<li><p>The implementation for Communications Agents could be changed to maintain two separate transmit queues (i.e., one for its own information units and one for relay).</p></li>
+<li><p>Leveraging a routing protocol, a route discovery process for Communications Agents may be developed.</p></li>
+</ul>
+</li>
+<li><p>Define an appropriate metric of performance for Communications Agents and Communications Coordinator (e.g., average of negative log of the per source throughput).</p></li>
+<li><p>Develop more sophisticated schemes for the Communications Coordinator.  Simple ones like TDMA and FDMA are currently implemented.  Future development could introduce more advanced coordination schemes including adaptation, planning, and even cognitive processing.</p></li>
+<li><p>Develop more sophisticated schemes for Disruption Token allocation by Interference Sources.  Currently, only random allocation is implemented.</p></li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="api.html" class="btn btn-neutral float-right" title="4. Application Programming Interface (API)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="license.html" class="btn btn-neutral float-left" title="2. License Information" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

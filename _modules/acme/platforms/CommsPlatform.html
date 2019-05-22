@@ -1,0 +1,456 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>acme.platforms.CommsPlatform &mdash; Abstract Communications Modeling Environment 1.0.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../../_static/language_data.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> Abstract Communications Modeling Environment
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../distribution.html">1. Distribution and Release Information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../license.html">2. License Information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../readme.html">3. Introduction and Description</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api.html">4. Application Programming Interface (API)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../documentation.html">5. Documentation</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Abstract Communications Modeling Environment</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>acme.platforms.CommsPlatform</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for acme.platforms.CommsPlatform</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">.Platform</span> <span class="k">import</span> <span class="n">Platform</span>
+<span class="kn">from</span> <span class="nn">..EmissionObj</span> <span class="k">import</span> <span class="n">Packet</span>
+<span class="kn">from</span> <span class="nn">..EmissionObj</span> <span class="k">import</span> <span class="n">AckPacket</span>
+<span class="kn">from</span> <span class="nn">..EmissionObj</span> <span class="k">import</span> <span class="n">DisruptionToken</span>
+<span class="kn">import</span> <span class="nn">queue</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="kn">import</span> <span class="nn">copy</span>
+
+<div class="viewcode-block" id="CommsPlatform"><a class="viewcode-back" href="../../../api/platforms.html#acme.platforms.CommsPlatform.CommsPlatform">[docs]</a><span class="k">class</span> <span class="nc">CommsPlatform</span><span class="p">(</span><span class="n">Platform</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Models a `Communications Platform` that can transmit and receive </span>
+<span class="sd">    units of information (`Packets`).</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    destIDs : list</span>
+<span class="sd">        The list of identification attributes :attr:`.id` for all </span>
+<span class="sd">        platforms that this platform may transmit to.</span>
+<span class="sd">    doAck : boolean</span>
+<span class="sd">        Indication whether to place acknowledgement packets into the </span>
+<span class="sd">        transmit queue when data packets are received and placed into </span>
+<span class="sd">        the receive queue.</span>
+<span class="sd">    </span>
+<span class="sd">    Todo</span>
+<span class="sd">    ----</span>
+<span class="sd">    Implement a learning mechanism to automatically determine which </span>
+<span class="sd">    other platforms this platform is connected to.</span>
+<span class="sd">    Currently, this value is populated with ground-truth values from :attr:`.Environment.adjMatrix`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+<div class="viewcode-block" id="CommsPlatform.__init__"><a class="viewcode-back" href="../../../api/platforms.html#acme.platforms.CommsPlatform.CommsPlatform.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span> <span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">theID</span><span class="p">,</span> <span class="n">theMaxSize</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">theDoAck</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">initialPos</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="n">initialVel</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="n">initialAcc</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        theID : any</span>
+<span class="sd">            The identification for this platform.</span>
+<span class="sd">            May be of any data type (int, str, etc.).</span>
+<span class="sd">        theMaxSize : int</span>
+<span class="sd">            The maximum number of information units that can be </span>
+<span class="sd">            buffered in each of this platform&#39;s transmit and receive </span>
+<span class="sd">            queues.</span>
+<span class="sd">            If the transmit buffer is full, then any new packets </span>
+<span class="sd">            requested to be transmitted will be dropped.</span>
+<span class="sd">            If the receive buffer is full, then any new packets </span>
+<span class="sd">            received will be dropped.</span>
+<span class="sd">        theDoAck : boolean</span>
+<span class="sd">            Indicate whether to transmit :class:`.AckPackets` upon </span>
+<span class="sd">            receiving :class:`.Packets`.</span>
+<span class="sd">        initialPos : list of float</span>
+<span class="sd">            The initial position of the platform in cartesian coordinates.</span>
+<span class="sd">            List has length 3 and is specified as :math:`[p_x,p_y,p_z]`.</span>
+<span class="sd">        initialVel : list of float</span>
+<span class="sd">            The initial velocity of the platform in cartesian coordinates.</span>
+<span class="sd">            List has length 3 and is specified as :math:`[v_x,v_y,v_z]`.</span>
+<span class="sd">        initialAcc : list of float</span>
+<span class="sd">            The initial acceleration of the platform in cartesian coordinates.</span>
+<span class="sd">            List has length 3 and is specified as :math:`[a_x,a_y,a_z]`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span> <span class="n">theID</span><span class="p">,</span> <span class="n">initialPos</span><span class="p">,</span> <span class="n">initialVel</span><span class="p">,</span> <span class="n">initialAcc</span> <span class="p">)</span>
+
+        <span class="c1"># Initialize array of destination IDs</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">destIDs</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="c1"># Initialize FIFO data buffer/queue</span>
+        <span class="k">if</span> <span class="n">theMaxSize</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Maximum transmit queue size must be greater than zero.&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">txQueue</span> <span class="o">=</span> <span class="n">queue</span><span class="o">.</span><span class="n">Queue</span><span class="p">(</span><span class="n">theMaxSize</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rxQueue</span> <span class="o">=</span> <span class="n">queue</span><span class="o">.</span><span class="n">Queue</span><span class="p">(</span><span class="n">theMaxSize</span><span class="p">)</span>
+
+        <span class="c1"># Specify if node should create acknowledgement packets when data packets are received</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">doAck</span> <span class="o">=</span> <span class="n">theDoAck</span>
+
+        <span class="c1"># Initialize message ID value</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__currentMsgID</span> <span class="o">=</span> <span class="mi">1</span></div>
+
+    <span class="nd">@property</span>
+    <span class="c1"># Specify array of destination IDs that this object can transmit to</span>
+    <span class="k">def</span> <span class="nf">destIDs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__destIDs</span>
+    <span class="nd">@destIDs</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">destIDs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="nb">list</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Node IDs must be specified as a list of values.&quot;</span><span class="p">)</span>
+        <span class="c1">#for i in value:</span>
+        <span class="c1">#    if type(i) is not int:</span>
+        <span class="c1">#        raise ValueError(&quot;Node IDs must be specified as a list of integers.&quot;)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__destIDs</span> <span class="o">=</span> <span class="n">value</span>
+
+    
+<div class="viewcode-block" id="CommsPlatform.txData"><a class="viewcode-back" href="../../../api/platforms.html#acme.platforms.CommsPlatform.CommsPlatform.txData">[docs]</a>    <span class="k">def</span> <span class="nf">txData</span> <span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">thePayload</span><span class="p">,</span> <span class="n">theDestID</span> <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Send data (information unit) to another :class:`.CommsPlatform`.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        thePayload : any</span>
+<span class="sd">            The user data to become the :attr:`.payload` of a </span>
+<span class="sd">            :class:`.Packet` to be transmitted.</span>
+<span class="sd">        theDestID : list</span>
+<span class="sd">            The list of identification attributes :attr:`.id` for all </span>
+<span class="sd">            platforms ``thePayload`` is to be transmitted to.</span>
+
+<span class="sd">        Note</span>
+<span class="sd">        ----</span>
+<span class="sd">        Entries in ``theDestID`` are not required to be entries in </span>
+<span class="sd">        :attr:`destIDs`.  If they are not, then `packets` will still </span>
+<span class="sd">        be constructed and transmitted, but just not delivered to any </span>
+<span class="sd">        platform.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># To be called by the user to transmit data</span>
+
+        <span class="c1"># Error checking</span>
+        <span class="k">assert</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">theDestID</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">list</span><span class="p">),</span> <span class="s1">&#39;theDestIDs is not a list&#39;</span>
+        <span class="c1">#assert(all(elem in self.destIDs for elem in theDestID)), &quot;theDestID is not valid&quot;</span>
+
+        <span class="c1"># Only send to valid destination IDs (take set intersection)</span>
+        <span class="c1">#theDestID = list(set(theDestID) &amp; set(self.destIDs))</span>
+
+        <span class="c1"># Create packet to transmit</span>
+        <span class="n">theMsgID</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__getNextMsgID</span><span class="p">()</span>
+        <span class="c1"># Make deep-copy of payload</span>
+        <span class="n">thePayloadCopy</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">thePayload</span><span class="p">)</span>
+        <span class="n">thePacket</span> <span class="o">=</span> <span class="n">Packet</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">theDestID</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">elapsedTime</span><span class="p">,</span> <span class="n">thePayloadCopy</span><span class="p">,</span> <span class="n">theMsgID</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__txPacket</span><span class="p">(</span><span class="n">thePacket</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="CommsPlatform.rxData"><a class="viewcode-back" href="../../../api/platforms.html#acme.platforms.CommsPlatform.CommsPlatform.rxData">[docs]</a>    <span class="k">def</span> <span class="nf">rxData</span> <span class="p">(</span> <span class="bp">self</span> <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Obtain the next payload in this platform&#39;s receive queue.</span>
+<span class="sd">        May be called repeatedly by the user.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        thePayload : any</span>
+<span class="sd">            The next payload in this platform&#39;s receive queue.</span>
+<span class="sd">            Returns ``None`` if the receive queue is empty.</span>
+
+<span class="sd">        Example</span>
+<span class="sd">        -------</span>
+<span class="sd">        If the user wants to empty the receive queue within the </span>
+<span class="sd">        current time step::</span>
+
+<span class="sd">            thePayload = thePlatform.rxData()</span>
+<span class="sd">            while thePayload is not None:</span>
+<span class="sd">                thePayload = thePlatform.rxData()</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># To be called by the user to query for data that has been received</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">rxQueue</span><span class="o">.</span><span class="n">empty</span><span class="p">():</span>
+            <span class="n">thePayloadTemp</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">thePayloadTemp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rxQueue</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+        <span class="c1"># Make deep-copy of payload</span>
+        <span class="n">thePayload</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">thePayloadTemp</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">thePayload</span></div>
+    
+<div class="viewcode-block" id="CommsPlatform.getData"><a class="viewcode-back" href="../../../api/platforms.html#acme.platforms.CommsPlatform.CommsPlatform.getData">[docs]</a>    <span class="k">def</span> <span class="nf">getData</span> <span class="p">(</span> <span class="bp">self</span> <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Obtain the next :class:`.Packet` in the transmit queue to be </span>
+<span class="sd">        transmitted.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        thePacket : :class:`.Packet`</span>
+<span class="sd">            The :class:`.Packet` to be transmitted.</span>
+
+<span class="sd">        Warning</span>
+<span class="sd">        -------</span>
+<span class="sd">        Method is typically called automatically by the </span>
+<span class="sd">        :class:`.CommsCoordinator` and is not intended to be called </span>
+<span class="sd">        directly by the user.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># To be called by the CommsCoordinator each time step</span>
+        <span class="c1"># Get data to transmit</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">txQueue</span><span class="o">.</span><span class="n">empty</span><span class="p">():</span>
+            <span class="n">thePacket</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">thePacket</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">txQueue</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">thePacket</span></div>
+
+<div class="viewcode-block" id="CommsPlatform.putData"><a class="viewcode-back" href="../../../api/platforms.html#acme.platforms.CommsPlatform.CommsPlatform.putData">[docs]</a>    <span class="k">def</span> <span class="nf">putData</span> <span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">theEmissionList</span> <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Process `emission objects` that have been received and place </span>
+<span class="sd">        them in the receive queue.</span>
+<span class="sd">        Do not place any `acknowledgement packets` that have been received </span>
+<span class="sd">        into the receive queue.</span>
+<span class="sd">        If any of these `emission objects` is a `disruption token`, </span>
+<span class="sd">        then all `emission objects` will be dropped and not processed.</span>
+<span class="sd">        Additionally, place new `acknowledgement packets` in the </span>
+<span class="sd">        transmit queue if configured to do so.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        theEmissionList : list</span>
+<span class="sd">            List of :class:`.EmissionObj` that have been received.</span>
+<span class="sd">        </span>
+<span class="sd">        Warning</span>
+<span class="sd">        -------</span>
+<span class="sd">        Method is typically called automatically by the </span>
+<span class="sd">        :class:`.Environment` and is not intended to be called </span>
+<span class="sd">        directly by the user.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># To be called by the Environment each time step</span>
+        
+        <span class="c1"># Determine if packets should be dropped due to disruptions</span>
+        <span class="n">isDisrupted</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">for</span> <span class="n">thePacket</span> <span class="ow">in</span> <span class="n">theEmissionList</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">thePacket</span><span class="p">,</span> <span class="n">DisruptionToken</span><span class="p">):</span>
+                <span class="n">isDisrupted</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">if</span> <span class="n">isDisrupted</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="k">for</span> <span class="n">thePacket</span> <span class="ow">in</span> <span class="n">theEmissionList</span><span class="p">:</span>
+            <span class="c1"># Drop acknowledgement packets</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">thePacket</span><span class="p">,</span> <span class="n">AckPacket</span><span class="p">):</span>
+                <span class="k">continue</span>
+
+            <span class="c1"># Add packet to receive queue</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">rxQueue</span><span class="o">.</span><span class="n">full</span><span class="p">():</span>
+                <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;Receive queue for PlatformID </span><span class="si">{}</span><span class="s2"> is full.  Data is dropped.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">rxQueue</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">thePacket</span><span class="o">.</span><span class="n">payload</span><span class="p">)</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">doAck</span><span class="p">:</span>
+                    <span class="c1">#assert(thePacket.sourceID in self.destIDs), &quot;Communication is not bi-directional. Cannot send acknowledgements.&quot;</span>
+                    <span class="n">theMsgID</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__getNextMsgID</span><span class="p">()</span>
+                    <span class="n">theAckPacket</span> <span class="o">=</span> <span class="n">AckPacket</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="p">[</span><span class="n">thePacket</span><span class="o">.</span><span class="n">sourceID</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">elapsedTime</span><span class="p">,</span> <span class="n">thePacket</span><span class="o">.</span><span class="n">msgID</span><span class="p">,</span> <span class="n">theMsgID</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">__txPacket</span><span class="p">(</span><span class="n">theAckPacket</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">__txPacket</span> <span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">thePacket</span> <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Add packet to transmit queue.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        thePacket : :class:`.Packet`</span>
+<span class="sd">            The :class:`.Packet` to add to the platform&#39;s transmit queue.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">txQueue</span><span class="o">.</span><span class="n">full</span><span class="p">():</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;Transmit queue for PlatformID </span><span class="si">{}</span><span class="s2"> is full.  Data is dropped.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">txQueue</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">thePacket</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__getNextMsgID</span> <span class="p">(</span> <span class="bp">self</span> <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Obtain the next available unique message ID for the next Packet</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        theMsgID : int</span>
+<span class="sd">            The next unique message ID</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">theMsgID</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__currentMsgID</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__currentMsgID</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">return</span> <span class="n">theMsgID</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

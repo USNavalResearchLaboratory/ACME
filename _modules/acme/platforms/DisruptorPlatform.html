@@ -1,0 +1,355 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>acme.platforms.DisruptorPlatform &mdash; Abstract Communications Modeling Environment 1.0.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../../_static/language_data.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> Abstract Communications Modeling Environment
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../distribution.html">1. Distribution and Release Information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../license.html">2. License Information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../readme.html">3. Introduction and Description</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api.html">4. Application Programming Interface (API)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../documentation.html">5. Documentation</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Abstract Communications Modeling Environment</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>acme.platforms.DisruptorPlatform</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for acme.platforms.DisruptorPlatform</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">.Platform</span> <span class="k">import</span> <span class="n">Platform</span>
+<span class="kn">from</span> <span class="nn">..EmissionObj</span> <span class="k">import</span> <span class="n">DisruptionToken</span>
+<span class="kn">import</span> <span class="nn">random</span>
+
+<div class="viewcode-block" id="DisruptorPlatform"><a class="viewcode-back" href="../../../api/platforms.html#acme.platforms.DisruptorPlatform.DisruptorPlatform">[docs]</a><span class="k">class</span> <span class="nc">DisruptorPlatform</span><span class="p">(</span><span class="n">Platform</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Models a `Disruptor Platform` that can transmit `disruption tokens` </span>
+<span class="sd">    to interfere with `Packets` transmitted from `Communications </span>
+<span class="sd">    Platforms`.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    numMaxTokens : int</span>
+<span class="sd">        The maximum number of :class:`.DisruptionToken` that may be </span>
+<span class="sd">        transmitted per time epoch.</span>
+<span class="sd">    numFrequencyBins : int</span>
+<span class="sd">        The number of frequency bins in the :class:`.Environment`.</span>
+<span class="sd">    numTimeStepsPerEpoch : int</span>
+<span class="sd">        The number of time steps per time epoch.</span>
+<span class="sd">    numTokensRemaining : int</span>
+<span class="sd">        The number of :class:`.DisruptionToken` remaining available to </span>
+<span class="sd">        be transmitted in the current time epoch.</span>
+<span class="sd">    commsDestIDs : list</span>
+<span class="sd">        The list of identification attributes :attr:`.id` for all </span>
+<span class="sd">        :class:`.CommsPlatform` that this platform may interfere with.</span>
+<span class="sd">    env : list of lists</span>
+<span class="sd">        This platform&#39;s current view and observation of the </span>
+<span class="sd">        :class:`.Environment`.</span>
+<span class="sd">        Has same format as :attr:`.Environment.data`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+<div class="viewcode-block" id="DisruptorPlatform.__init__"><a class="viewcode-back" href="../../../api/platforms.html#acme.platforms.DisruptorPlatform.DisruptorPlatform.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span> <span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">theID</span><span class="p">,</span> <span class="n">theNumMaxTokens</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">theNumFrequencyBins</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">theNumTimeStepsPerEpoch</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">initialPos</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="n">initialVel</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="n">initialAcc</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        theID : any</span>
+<span class="sd">            The identification for this platform.</span>
+<span class="sd">            May be of any data type (int, str, etc.).</span>
+<span class="sd">        theNumMaxTokens : int</span>
+<span class="sd">            The maximum number of :class:`.DisruptionToken` that may </span>
+<span class="sd">            be transmitted per time epoch.</span>
+<span class="sd">        theNumFrequencyBins : int</span>
+<span class="sd">            The number of frequency bins in the :class:`.Environment`.</span>
+<span class="sd">        theNumTimeStepsPerEpoch : int</span>
+<span class="sd">            The number of time steps per time epoch.</span>
+<span class="sd">        initialPos : list of float</span>
+<span class="sd">            The initial position of the platform in cartesian coordinates.</span>
+<span class="sd">            List has length 3 and is specified as :math:`[p_x,p_y,p_z]`.</span>
+<span class="sd">        initialVel : list of float</span>
+<span class="sd">            The initial velocity of the platform in cartesian coordinates.</span>
+<span class="sd">            List has length 3 and is specified as :math:`[v_x,v_y,v_z]`.</span>
+<span class="sd">        initialAcc : list of float</span>
+<span class="sd">            The initial acceleration of the platform in cartesian coordinates.</span>
+<span class="sd">            List has length 3 and is specified as :math:`[a_x,a_y,a_z]`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span> <span class="n">theID</span><span class="p">,</span> <span class="n">initialPos</span><span class="p">,</span> <span class="n">initialVel</span><span class="p">,</span> <span class="n">initialAcc</span> <span class="p">)</span>
+        <span class="c1"># theID is currently not used by ACME for DisruptorPlatforms</span>
+
+        <span class="c1"># Specify the maximum number of disruptor tokens</span>
+        <span class="k">if</span> <span class="n">theNumMaxTokens</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="nb">type</span><span class="p">(</span><span class="n">theNumMaxTokens</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="nb">int</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Number of disruption tokens must be non-negative integer.&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">numMaxTokens</span> <span class="o">=</span> <span class="n">theNumMaxTokens</span>
+        <span class="c1"># Specify the number of discrete frequency bins in the environment</span>
+        <span class="k">if</span> <span class="n">theNumFrequencyBins</span> <span class="o">&lt;</span> <span class="mi">1</span> <span class="ow">or</span> <span class="nb">type</span><span class="p">(</span><span class="n">theNumFrequencyBins</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="nb">int</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Number of frequency bins must be an integer greater than zero.&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">numFrequencyBins</span> <span class="o">=</span> <span class="n">theNumFrequencyBins</span>
+        <span class="c1"># Specify the number of time steps per time epoch</span>
+        <span class="k">if</span> <span class="n">theNumTimeStepsPerEpoch</span> <span class="o">&lt;</span> <span class="mi">1</span> <span class="ow">or</span> <span class="nb">type</span><span class="p">(</span><span class="n">theNumTimeStepsPerEpoch</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="nb">int</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Number of time steps per epoch must be an integer greater than zero.&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">numTimeStepsPerEpoch</span> <span class="o">=</span> <span class="n">theNumTimeStepsPerEpoch</span>
+
+        <span class="c1"># Initialize number of disruption tokens left in current time epoch</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">numTokensRemaining</span> <span class="o">=</span> <span class="n">theNumMaxTokens</span>
+
+        <span class="c1"># Initialize array of destination IDs</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">commsDestIDs</span> <span class="o">=</span> <span class="p">[]</span>
+        
+        <span class="c1"># Initialize current observation of Environment</span>
+        <span class="c1"># Will be directly updated by Environment, and will be a list of [[CommsCoordinator data], [[Disruptor1 data], [Disruptor2 data], ...]]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">env</span> <span class="o">=</span> <span class="kc">None</span></div>
+
+    <span class="nd">@property</span>
+    <span class="c1"># Specify array of destination IDs that this object can transmit to</span>
+    <span class="k">def</span> <span class="nf">commsDestIDs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__commsDestIDs</span>
+    <span class="nd">@commsDestIDs</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">commsDestIDs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="nb">list</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Node IDs must be specified as a list of values.&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__commsDestIDs</span> <span class="o">=</span> <span class="n">value</span>
+    
+<div class="viewcode-block" id="DisruptorPlatform.step"><a class="viewcode-back" href="../../../api/platforms.html#acme.platforms.DisruptorPlatform.DisruptorPlatform.step">[docs]</a>    <span class="k">def</span> <span class="nf">step</span> <span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">deltaT</span> <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Advance the platform&#39;s position, velocity, and acceleration by </span>
+<span class="sd">        ``deltaT`` seconds.</span>
+<span class="sd">        Reset the number of `disruption tokens` available if a new </span>
+<span class="sd">        time epoch has been reached.</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        deltaT : float</span>
+<span class="sd">            The number of seconds to advance the platform by.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">deltaT</span><span class="p">)</span>
+
+        <span class="c1"># Determine if a new time epoch has begun</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">elapsedTimeSteps</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">numTimeStepsPerEpoch</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="c1"># Reset the number of disruption tokens</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">numTokensRemaining</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">numMaxTokens</span></div>
+        
+
+<div class="viewcode-block" id="DisruptorPlatform.getDisruptions"><a class="viewcode-back" href="../../../api/platforms.html#acme.platforms.DisruptorPlatform.DisruptorPlatform.getDisruptions">[docs]</a>    <span class="k">def</span> <span class="nf">getDisruptions</span> <span class="p">(</span> <span class="bp">self</span> <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Decide which `disruption tokens` should be placed in which </span>
+<span class="sd">        frequency bins for the current time step.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        tokens : list</span>
+<span class="sd">            List indicating which `disruption tokens` have been placed </span>
+<span class="sd">            in which frequency bins.</span>
+<span class="sd">            Each element of the list is either ``None`` or contains a </span>
+<span class="sd">            single :class:`.DisruptionToken`.</span>
+<span class="sd">            List has length :attr:`numFrequencyBins`.</span>
+<span class="sd">        </span>
+<span class="sd">        Todo</span>
+<span class="sd">        ----</span>
+<span class="sd">        Develop more methods for allocating `disruption tokens` other </span>
+<span class="sd">        than random placement into frequency bins.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># Get disruption tokens for all frequency bins</span>
+        
+        <span class="c1"># Obtain number of tokens to use during this time step,</span>
+        <span class="c1">#     given constraint of total number of tokens available for entire time epoch</span>
+        <span class="c1"># TODO: Need to leverage self.env</span>
+        <span class="n">numTokensToUse</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">numTokensRemaining</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1">#FIXME</span>
+        
+        <span class="c1"># Initialize disruption tokens</span>
+        <span class="n">tokens</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">numFrequencyBins</span>
+
+        <span class="c1"># Ensure number of disruption tokens is not greater than number of frequency bins</span>
+        <span class="k">if</span> <span class="n">numTokensToUse</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">numFrequencyBins</span><span class="p">:</span>
+            <span class="n">numTokensToUse</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">numFrequencyBins</span>
+        
+        <span class="k">assert</span> <span class="p">(</span><span class="n">numTokensToUse</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">numTokensRemaining</span><span class="p">),</span> <span class="s2">&quot;Number of tokens requested to use is greater than number of tokens available!&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">numTokensRemaining</span> <span class="o">-=</span> <span class="n">numTokensToUse</span>
+
+        <span class="c1"># Assign tokens to frequency bins</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">numFrequencyBins</span><span class="p">),</span> <span class="n">numTokensToUse</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">index</span><span class="p">:</span>
+            <span class="n">tokens</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">DisruptionToken</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">commsDestIDs</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">elapsedTime</span><span class="p">)</span>
+            <span class="n">tokens</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">freqBin</span> <span class="o">=</span> <span class="n">i</span>
+            <span class="n">tokens</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">position</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pos</span>
+        <span class="k">return</span> <span class="n">tokens</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

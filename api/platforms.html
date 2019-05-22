@@ -1,0 +1,709 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>4.1. Platforms / Agents &mdash; Abstract Communications Modeling Environment 1.0.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="4.2. Communications Coordinator" href="coordinators.html" />
+    <link rel="prev" title="4. Application Programming Interface (API)" href="../api.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Abstract Communications Modeling Environment
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../distribution.html">1. Distribution and Release Information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">2. License Information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../readme.html">3. Introduction and Description</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../api.html">4. Application Programming Interface (API)</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">4.1. Platforms / Agents</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#module-acme.platforms.CommsPlatform">4.1.1. Communications Platform</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-acme.platforms.DisruptorPlatform">4.1.2. Disruptor Platform</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="coordinators.html">4.2. Communications Coordinator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="environment.html">4.3. RF Environment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="emissions.html">4.4. Emission Objects</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../documentation.html">5. Documentation</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Abstract Communications Modeling Environment</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../api.html">4. Application Programming Interface (API)</a> &raquo;</li>
+        
+      <li>4.1. Platforms / Agents</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/api/platforms.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="platforms-agents">
+<h1><a class="toc-backref" href="#id1">4.1. Platforms / Agents</a><a class="headerlink" href="#platforms-agents" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+</div>
+<div class="contents topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#platforms-agents" id="id1">Platforms / Agents</a></p>
+<ul>
+<li><p><a class="reference internal" href="#module-acme.platforms.CommsPlatform" id="id2">Communications Platform</a></p></li>
+<li><p><a class="reference internal" href="#module-acme.platforms.DisruptorPlatform" id="id3">Disruptor Platform</a></p></li>
+</ul>
+</li>
+</ul>
+</div>
+<span class="target" id="module-acme.platforms.Platform"></span><dl class="class">
+<dt id="acme.platforms.Platform.Platform">
+<em class="property">class </em><code class="descclassname">acme.platforms.Platform.</code><code class="descname">Platform</code><span class="sig-paren">(</span><em>theID, initialPos=[0, 0, 0], initialVel=[0, 0, 0], initialAcc=[0, 0, 0]</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/acme/platforms/Platform.html#Platform"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#acme.platforms.Platform.Platform" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Models the position, velocity, and acceleration of a platform.</p>
+<dl class="attribute">
+<dt id="acme.platforms.Platform.Platform.id">
+<code class="descname">id</code><a class="headerlink" href="#acme.platforms.Platform.Platform.id" title="Permalink to this definition">¶</a></dt>
+<dd><p>The identification for this platform.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>any</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="acme.platforms.Platform.Platform.pos">
+<code class="descname">pos</code><a class="headerlink" href="#acme.platforms.Platform.Platform.pos" title="Permalink to this definition">¶</a></dt>
+<dd><p>The current position in cartesian coordinates.
+Array has length 3 and is specified as <span class="math notranslate nohighlight">\([p_x,p_y,p_z]\)</span>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>numpy.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="acme.platforms.Platform.Platform.vel">
+<code class="descname">vel</code><a class="headerlink" href="#acme.platforms.Platform.Platform.vel" title="Permalink to this definition">¶</a></dt>
+<dd><p>The current velocity in cartesian coordinates.
+Array has length 3 and is specified as <span class="math notranslate nohighlight">\([v_x,v_y,v_z]\)</span>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>numpy.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="acme.platforms.Platform.Platform.acc">
+<code class="descname">acc</code><a class="headerlink" href="#acme.platforms.Platform.Platform.acc" title="Permalink to this definition">¶</a></dt>
+<dd><p>The current acceleration in cartesian coordinates.
+Array has length 3 and is specified as <span class="math notranslate nohighlight">\([a_x,a_y,a_z]\)</span>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>numpy.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="acme.platforms.Platform.Platform.elapsedTime">
+<code class="descname">elapsedTime</code><a class="headerlink" href="#acme.platforms.Platform.Platform.elapsedTime" title="Permalink to this definition">¶</a></dt>
+<dd><p>The number of simulated seconds that have passed since the
+simulation began.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="acme.platforms.Platform.Platform.elapsedTimeSteps">
+<code class="descname">elapsedTimeSteps</code><a class="headerlink" href="#acme.platforms.Platform.Platform.elapsedTimeSteps" title="Permalink to this definition">¶</a></dt>
+<dd><p>The number of time steps that have passed since the
+simulation began (i.e., number of times <a class="reference internal" href="#acme.platforms.Platform.Platform.step" title="acme.platforms.Platform.Platform.step"><code class="xref py py-meth docutils literal notranslate"><span class="pre">step()</span></code></a> has been
+called).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="acme.platforms.Platform.Platform.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>theID, initialPos=[0, 0, 0], initialVel=[0, 0, 0], initialAcc=[0, 0, 0]</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/acme/platforms/Platform.html#Platform.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#acme.platforms.Platform.Platform.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>theID</strong> (<em>any</em>) – The identification for this platform.
+May be of any data type (int, str, etc.).</p></li>
+<li><p><strong>initialPos</strong> (<em>list of float</em>) – The initial position of the platform in cartesian coordinates.
+List has length 3 and is specified as <span class="math notranslate nohighlight">\([p_x,p_y,p_z]\)</span>.</p></li>
+<li><p><strong>initialVel</strong> (<em>list of float</em>) – The initial velocity of the platform in cartesian coordinates.
+List has length 3 and is specified as <span class="math notranslate nohighlight">\([v_x,v_y,v_z]\)</span>.</p></li>
+<li><p><strong>initialAcc</strong> (<em>list of float</em>) – The initial acceleration of the platform in cartesian coordinates.
+List has length 3 and is specified as <span class="math notranslate nohighlight">\([a_x,a_y,a_z]\)</span>.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="acme.platforms.Platform.Platform.accX">
+<code class="descname">accX</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/acme/platforms/Platform.html#Platform.accX"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#acme.platforms.Platform.Platform.accX" title="Permalink to this definition">¶</a></dt>
+<dd><p>The first acceleration coordinate (<span class="math notranslate nohighlight">\(a_x\)</span>).</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="acme.platforms.Platform.Platform.accY">
+<code class="descname">accY</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/acme/platforms/Platform.html#Platform.accY"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#acme.platforms.Platform.Platform.accY" title="Permalink to this definition">¶</a></dt>
+<dd><p>The second acceleration coordinate (<span class="math notranslate nohighlight">\(a_y\)</span>).</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="acme.platforms.Platform.Platform.accZ">
+<code class="descname">accZ</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/acme/platforms/Platform.html#Platform.accZ"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#acme.platforms.Platform.Platform.accZ" title="Permalink to this definition">¶</a></dt>
+<dd><p>The third acceleration coordinate (<span class="math notranslate nohighlight">\(a_z\)</span>).</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="acme.platforms.Platform.Platform.posX">
+<code class="descname">posX</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/acme/platforms/Platform.html#Platform.posX"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#acme.platforms.Platform.Platform.posX" title="Permalink to this definition">¶</a></dt>
+<dd><p>The first position coordinate (<span class="math notranslate nohighlight">\(p_x\)</span>).</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="acme.platforms.Platform.Platform.posY">
+<code class="descname">posY</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/acme/platforms/Platform.html#Platform.posY"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#acme.platforms.Platform.Platform.posY" title="Permalink to this definition">¶</a></dt>
+<dd><p>The second position coordinate (<span class="math notranslate nohighlight">\(p_y\)</span>).</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="acme.platforms.Platform.Platform.posZ">
+<code class="descname">posZ</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/acme/platforms/Platform.html#Platform.posZ"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#acme.platforms.Platform.Platform.posZ" title="Permalink to this definition">¶</a></dt>
+<dd><p>The third position coordinate (<span class="math notranslate nohighlight">\(p_z\)</span>).</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="acme.platforms.Platform.Platform.step">
+<code class="descname">step</code><span class="sig-paren">(</span><em>deltaT</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/acme/platforms/Platform.html#Platform.step"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#acme.platforms.Platform.Platform.step" title="Permalink to this definition">¶</a></dt>
+<dd><p>Advance the platform’s position, velocity, and acceleration by
+<code class="docutils literal notranslate"><span class="pre">deltaT</span></code> seconds.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>deltaT</strong> (<em>float</em>) – The number of seconds to advance the platform by.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="acme.platforms.Platform.Platform.velX">
+<code class="descname">velX</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/acme/platforms/Platform.html#Platform.velX"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#acme.platforms.Platform.Platform.velX" title="Permalink to this definition">¶</a></dt>
+<dd><p>The first velocity coordinate (<span class="math notranslate nohighlight">\(v_x\)</span>).</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="acme.platforms.Platform.Platform.velY">
+<code class="descname">velY</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/acme/platforms/Platform.html#Platform.velY"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#acme.platforms.Platform.Platform.velY" title="Permalink to this definition">¶</a></dt>
+<dd><p>The second velocity coordinate (<span class="math notranslate nohighlight">\(v_y\)</span>).</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="acme.platforms.Platform.Platform.velZ">
+<code class="descname">velZ</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/acme/platforms/Platform.html#Platform.velZ"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#acme.platforms.Platform.Platform.velZ" title="Permalink to this definition">¶</a></dt>
+<dd><p>The third velocity coordinate (<span class="math notranslate nohighlight">\(v_z\)</span>).</p>
+</dd></dl>
+
+</dd></dl>
+
+<div class="section" id="module-acme.platforms.CommsPlatform">
+<span id="communications-platform"></span><h2><a class="toc-backref" href="#id2">4.1.1. Communications Platform</a><a class="headerlink" href="#module-acme.platforms.CommsPlatform" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="acme.platforms.CommsPlatform.CommsPlatform">
+<em class="property">class </em><code class="descclassname">acme.platforms.CommsPlatform.</code><code class="descname">CommsPlatform</code><span class="sig-paren">(</span><em>theID, theMaxSize=100, theDoAck=True, initialPos=[0, 0, 0], initialVel=[0, 0, 0], initialAcc=[0, 0, 0]</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/acme/platforms/CommsPlatform.html#CommsPlatform"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#acme.platforms.CommsPlatform.CommsPlatform" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#acme.platforms.Platform.Platform" title="acme.platforms.Platform.Platform"><code class="xref py py-class docutils literal notranslate"><span class="pre">acme.platforms.Platform.Platform</span></code></a></p>
+<p>Models a <cite>Communications Platform</cite> that can transmit and receive
+units of information (<cite>Packets</cite>).</p>
+<dl class="attribute">
+<dt id="acme.platforms.CommsPlatform.CommsPlatform.destIDs">
+<code class="descname">destIDs</code><a class="headerlink" href="#acme.platforms.CommsPlatform.CommsPlatform.destIDs" title="Permalink to this definition">¶</a></dt>
+<dd><p>The list of identification attributes <a class="reference internal" href="#acme.platforms.Platform.Platform.id" title="acme.platforms.Platform.Platform.id"><code class="xref py py-attr docutils literal notranslate"><span class="pre">id</span></code></a> for all
+platforms that this platform may transmit to.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="acme.platforms.CommsPlatform.CommsPlatform.doAck">
+<code class="descname">doAck</code><a class="headerlink" href="#acme.platforms.CommsPlatform.CommsPlatform.doAck" title="Permalink to this definition">¶</a></dt>
+<dd><p>Indication whether to place acknowledgement packets into the
+transmit queue when data packets are received and placed into
+the receive queue.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>boolean</p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="admonition-todo admonition" id="index-0">
+<p class="admonition-title">Todo</p>
+<p>Implement a learning mechanism to automatically determine which
+other platforms this platform is connected to.
+Currently, this value is populated with ground-truth values from <a class="reference internal" href="environment.html#acme.Environment.Environment.adjMatrix" title="acme.Environment.Environment.adjMatrix"><code class="xref py py-attr docutils literal notranslate"><span class="pre">Environment.adjMatrix</span></code></a>.</p>
+</div>
+<dl class="method">
+<dt id="acme.platforms.CommsPlatform.CommsPlatform.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>theID, theMaxSize=100, theDoAck=True, initialPos=[0, 0, 0], initialVel=[0, 0, 0], initialAcc=[0, 0, 0]</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/acme/platforms/CommsPlatform.html#CommsPlatform.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#acme.platforms.CommsPlatform.CommsPlatform.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>theID</strong> (<em>any</em>) – The identification for this platform.
+May be of any data type (int, str, etc.).</p></li>
+<li><p><strong>theMaxSize</strong> (<em>int</em>) – The maximum number of information units that can be
+buffered in each of this platform’s transmit and receive
+queues.
+If the transmit buffer is full, then any new packets
+requested to be transmitted will be dropped.
+If the receive buffer is full, then any new packets
+received will be dropped.</p></li>
+<li><p><strong>theDoAck</strong> (<em>boolean</em>) – Indicate whether to transmit <code class="xref py py-class docutils literal notranslate"><span class="pre">AckPackets</span></code> upon
+receiving <code class="xref py py-class docutils literal notranslate"><span class="pre">Packets</span></code>.</p></li>
+<li><p><strong>initialPos</strong> (<em>list of float</em>) – The initial position of the platform in cartesian coordinates.
+List has length 3 and is specified as <span class="math notranslate nohighlight">\([p_x,p_y,p_z]\)</span>.</p></li>
+<li><p><strong>initialVel</strong> (<em>list of float</em>) – The initial velocity of the platform in cartesian coordinates.
+List has length 3 and is specified as <span class="math notranslate nohighlight">\([v_x,v_y,v_z]\)</span>.</p></li>
+<li><p><strong>initialAcc</strong> (<em>list of float</em>) – The initial acceleration of the platform in cartesian coordinates.
+List has length 3 and is specified as <span class="math notranslate nohighlight">\([a_x,a_y,a_z]\)</span>.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="acme.platforms.CommsPlatform.CommsPlatform.getData">
+<code class="descname">getData</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/acme/platforms/CommsPlatform.html#CommsPlatform.getData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#acme.platforms.CommsPlatform.CommsPlatform.getData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Obtain the next <a class="reference internal" href="emissions.html#acme.EmissionObj.Packet" title="acme.EmissionObj.Packet"><code class="xref py py-class docutils literal notranslate"><span class="pre">Packet</span></code></a> in the transmit queue to be
+transmitted.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><strong>thePacket</strong> – The <a class="reference internal" href="emissions.html#acme.EmissionObj.Packet" title="acme.EmissionObj.Packet"><code class="xref py py-class docutils literal notranslate"><span class="pre">Packet</span></code></a> to be transmitted.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="emissions.html#acme.EmissionObj.Packet" title="acme.EmissionObj.Packet"><code class="xref py py-class docutils literal notranslate"><span class="pre">Packet</span></code></a></p>
+</dd>
+</dl>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Method is typically called automatically by the
+<a class="reference internal" href="coordinators.html#acme.coordinators.CommsCoordinator.CommsCoordinator" title="acme.coordinators.CommsCoordinator.CommsCoordinator"><code class="xref py py-class docutils literal notranslate"><span class="pre">CommsCoordinator</span></code></a> and is not intended to be called
+directly by the user.</p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="acme.platforms.CommsPlatform.CommsPlatform.putData">
+<code class="descname">putData</code><span class="sig-paren">(</span><em>theEmissionList</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/acme/platforms/CommsPlatform.html#CommsPlatform.putData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#acme.platforms.CommsPlatform.CommsPlatform.putData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Process <cite>emission objects</cite> that have been received and place
+them in the receive queue.
+Do not place any <cite>acknowledgement packets</cite> that have been received
+into the receive queue.
+If any of these <cite>emission objects</cite> is a <cite>disruption token</cite>,
+then all <cite>emission objects</cite> will be dropped and not processed.
+Additionally, place new <cite>acknowledgement packets</cite> in the
+transmit queue if configured to do so.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>theEmissionList</strong> (<em>list</em>) – List of <a class="reference internal" href="emissions.html#acme.EmissionObj.EmissionObj" title="acme.EmissionObj.EmissionObj"><code class="xref py py-class docutils literal notranslate"><span class="pre">EmissionObj</span></code></a> that have been received.</p>
+</dd>
+</dl>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Method is typically called automatically by the
+<a class="reference internal" href="environment.html#acme.Environment.Environment" title="acme.Environment.Environment"><code class="xref py py-class docutils literal notranslate"><span class="pre">Environment</span></code></a> and is not intended to be called
+directly by the user.</p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="acme.platforms.CommsPlatform.CommsPlatform.rxData">
+<code class="descname">rxData</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/acme/platforms/CommsPlatform.html#CommsPlatform.rxData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#acme.platforms.CommsPlatform.CommsPlatform.rxData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Obtain the next payload in this platform’s receive queue.
+May be called repeatedly by the user.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><strong>thePayload</strong> – The next payload in this platform’s receive queue.
+Returns <code class="docutils literal notranslate"><span class="pre">None</span></code> if the receive queue is empty.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>any</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<p>If the user wants to empty the receive queue within the
+current time step:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">thePayload</span> <span class="o">=</span> <span class="n">thePlatform</span><span class="o">.</span><span class="n">rxData</span><span class="p">()</span>
+<span class="k">while</span> <span class="n">thePayload</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">thePayload</span> <span class="o">=</span> <span class="n">thePlatform</span><span class="o">.</span><span class="n">rxData</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="acme.platforms.CommsPlatform.CommsPlatform.txData">
+<code class="descname">txData</code><span class="sig-paren">(</span><em>thePayload</em>, <em>theDestID</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/acme/platforms/CommsPlatform.html#CommsPlatform.txData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#acme.platforms.CommsPlatform.CommsPlatform.txData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Send data (information unit) to another <a class="reference internal" href="#acme.platforms.CommsPlatform.CommsPlatform" title="acme.platforms.CommsPlatform.CommsPlatform"><code class="xref py py-class docutils literal notranslate"><span class="pre">CommsPlatform</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>thePayload</strong> (<em>any</em>) – The user data to become the <a class="reference internal" href="emissions.html#acme.EmissionObj.Packet.payload" title="acme.EmissionObj.Packet.payload"><code class="xref py py-attr docutils literal notranslate"><span class="pre">payload</span></code></a> of a
+<a class="reference internal" href="emissions.html#acme.EmissionObj.Packet" title="acme.EmissionObj.Packet"><code class="xref py py-class docutils literal notranslate"><span class="pre">Packet</span></code></a> to be transmitted.</p></li>
+<li><p><strong>theDestID</strong> (<em>list</em>) – The list of identification attributes <a class="reference internal" href="#acme.platforms.Platform.Platform.id" title="acme.platforms.Platform.Platform.id"><code class="xref py py-attr docutils literal notranslate"><span class="pre">id</span></code></a> for all
+platforms <code class="docutils literal notranslate"><span class="pre">thePayload</span></code> is to be transmitted to.</p></li>
+</ul>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Entries in <code class="docutils literal notranslate"><span class="pre">theDestID</span></code> are not required to be entries in
+<a class="reference internal" href="#acme.platforms.CommsPlatform.CommsPlatform.destIDs" title="acme.platforms.CommsPlatform.CommsPlatform.destIDs"><code class="xref py py-attr docutils literal notranslate"><span class="pre">destIDs</span></code></a>.  If they are not, then <cite>packets</cite> will still
+be constructed and transmitted, but just not delivered to any
+platform.</p>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-acme.platforms.DisruptorPlatform">
+<span id="disruptor-platform"></span><h2><a class="toc-backref" href="#id3">4.1.2. Disruptor Platform</a><a class="headerlink" href="#module-acme.platforms.DisruptorPlatform" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="acme.platforms.DisruptorPlatform.DisruptorPlatform">
+<em class="property">class </em><code class="descclassname">acme.platforms.DisruptorPlatform.</code><code class="descname">DisruptorPlatform</code><span class="sig-paren">(</span><em>theID, theNumMaxTokens=10, theNumFrequencyBins=10, theNumTimeStepsPerEpoch=10, initialPos=[0, 0, 0], initialVel=[0, 0, 0], initialAcc=[0, 0, 0]</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/acme/platforms/DisruptorPlatform.html#DisruptorPlatform"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#acme.platforms.DisruptorPlatform.DisruptorPlatform" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#acme.platforms.Platform.Platform" title="acme.platforms.Platform.Platform"><code class="xref py py-class docutils literal notranslate"><span class="pre">acme.platforms.Platform.Platform</span></code></a></p>
+<p>Models a <cite>Disruptor Platform</cite> that can transmit <cite>disruption tokens</cite>
+to interfere with <cite>Packets</cite> transmitted from <cite>Communications
+Platforms</cite>.</p>
+<dl class="attribute">
+<dt id="acme.platforms.DisruptorPlatform.DisruptorPlatform.numMaxTokens">
+<code class="descname">numMaxTokens</code><a class="headerlink" href="#acme.platforms.DisruptorPlatform.DisruptorPlatform.numMaxTokens" title="Permalink to this definition">¶</a></dt>
+<dd><p>The maximum number of <a class="reference internal" href="emissions.html#acme.EmissionObj.DisruptionToken" title="acme.EmissionObj.DisruptionToken"><code class="xref py py-class docutils literal notranslate"><span class="pre">DisruptionToken</span></code></a> that may be
+transmitted per time epoch.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="acme.platforms.DisruptorPlatform.DisruptorPlatform.numFrequencyBins">
+<code class="descname">numFrequencyBins</code><a class="headerlink" href="#acme.platforms.DisruptorPlatform.DisruptorPlatform.numFrequencyBins" title="Permalink to this definition">¶</a></dt>
+<dd><p>The number of frequency bins in the <a class="reference internal" href="environment.html#acme.Environment.Environment" title="acme.Environment.Environment"><code class="xref py py-class docutils literal notranslate"><span class="pre">Environment</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="acme.platforms.DisruptorPlatform.DisruptorPlatform.numTimeStepsPerEpoch">
+<code class="descname">numTimeStepsPerEpoch</code><a class="headerlink" href="#acme.platforms.DisruptorPlatform.DisruptorPlatform.numTimeStepsPerEpoch" title="Permalink to this definition">¶</a></dt>
+<dd><p>The number of time steps per time epoch.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="acme.platforms.DisruptorPlatform.DisruptorPlatform.numTokensRemaining">
+<code class="descname">numTokensRemaining</code><a class="headerlink" href="#acme.platforms.DisruptorPlatform.DisruptorPlatform.numTokensRemaining" title="Permalink to this definition">¶</a></dt>
+<dd><p>The number of <a class="reference internal" href="emissions.html#acme.EmissionObj.DisruptionToken" title="acme.EmissionObj.DisruptionToken"><code class="xref py py-class docutils literal notranslate"><span class="pre">DisruptionToken</span></code></a> remaining available to
+be transmitted in the current time epoch.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="acme.platforms.DisruptorPlatform.DisruptorPlatform.commsDestIDs">
+<code class="descname">commsDestIDs</code><a class="headerlink" href="#acme.platforms.DisruptorPlatform.DisruptorPlatform.commsDestIDs" title="Permalink to this definition">¶</a></dt>
+<dd><p>The list of identification attributes <a class="reference internal" href="#acme.platforms.Platform.Platform.id" title="acme.platforms.Platform.Platform.id"><code class="xref py py-attr docutils literal notranslate"><span class="pre">id</span></code></a> for all
+<a class="reference internal" href="#acme.platforms.CommsPlatform.CommsPlatform" title="acme.platforms.CommsPlatform.CommsPlatform"><code class="xref py py-class docutils literal notranslate"><span class="pre">CommsPlatform</span></code></a> that this platform may interfere with.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="acme.platforms.DisruptorPlatform.DisruptorPlatform.env">
+<code class="descname">env</code><a class="headerlink" href="#acme.platforms.DisruptorPlatform.DisruptorPlatform.env" title="Permalink to this definition">¶</a></dt>
+<dd><p>This platform’s current view and observation of the
+<a class="reference internal" href="environment.html#acme.Environment.Environment" title="acme.Environment.Environment"><code class="xref py py-class docutils literal notranslate"><span class="pre">Environment</span></code></a>.
+Has same format as <a class="reference internal" href="environment.html#acme.Environment.Environment.data" title="acme.Environment.Environment.data"><code class="xref py py-attr docutils literal notranslate"><span class="pre">Environment.data</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>list of lists</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="acme.platforms.DisruptorPlatform.DisruptorPlatform.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>theID, theNumMaxTokens=10, theNumFrequencyBins=10, theNumTimeStepsPerEpoch=10, initialPos=[0, 0, 0], initialVel=[0, 0, 0], initialAcc=[0, 0, 0]</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/acme/platforms/DisruptorPlatform.html#DisruptorPlatform.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#acme.platforms.DisruptorPlatform.DisruptorPlatform.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>theID</strong> (<em>any</em>) – The identification for this platform.
+May be of any data type (int, str, etc.).</p></li>
+<li><p><strong>theNumMaxTokens</strong> (<em>int</em>) – The maximum number of <a class="reference internal" href="emissions.html#acme.EmissionObj.DisruptionToken" title="acme.EmissionObj.DisruptionToken"><code class="xref py py-class docutils literal notranslate"><span class="pre">DisruptionToken</span></code></a> that may
+be transmitted per time epoch.</p></li>
+<li><p><strong>theNumFrequencyBins</strong> (<em>int</em>) – The number of frequency bins in the <a class="reference internal" href="environment.html#acme.Environment.Environment" title="acme.Environment.Environment"><code class="xref py py-class docutils literal notranslate"><span class="pre">Environment</span></code></a>.</p></li>
+<li><p><strong>theNumTimeStepsPerEpoch</strong> (<em>int</em>) – The number of time steps per time epoch.</p></li>
+<li><p><strong>initialPos</strong> (<em>list of float</em>) – The initial position of the platform in cartesian coordinates.
+List has length 3 and is specified as <span class="math notranslate nohighlight">\([p_x,p_y,p_z]\)</span>.</p></li>
+<li><p><strong>initialVel</strong> (<em>list of float</em>) – The initial velocity of the platform in cartesian coordinates.
+List has length 3 and is specified as <span class="math notranslate nohighlight">\([v_x,v_y,v_z]\)</span>.</p></li>
+<li><p><strong>initialAcc</strong> (<em>list of float</em>) – The initial acceleration of the platform in cartesian coordinates.
+List has length 3 and is specified as <span class="math notranslate nohighlight">\([a_x,a_y,a_z]\)</span>.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="acme.platforms.DisruptorPlatform.DisruptorPlatform.getDisruptions">
+<code class="descname">getDisruptions</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/acme/platforms/DisruptorPlatform.html#DisruptorPlatform.getDisruptions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#acme.platforms.DisruptorPlatform.DisruptorPlatform.getDisruptions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decide which <cite>disruption tokens</cite> should be placed in which
+frequency bins for the current time step.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><strong>tokens</strong> – List indicating which <cite>disruption tokens</cite> have been placed
+in which frequency bins.
+Each element of the list is either <code class="docutils literal notranslate"><span class="pre">None</span></code> or contains a
+single <a class="reference internal" href="emissions.html#acme.EmissionObj.DisruptionToken" title="acme.EmissionObj.DisruptionToken"><code class="xref py py-class docutils literal notranslate"><span class="pre">DisruptionToken</span></code></a>.
+List has length <a class="reference internal" href="#acme.platforms.DisruptorPlatform.DisruptorPlatform.numFrequencyBins" title="acme.platforms.DisruptorPlatform.DisruptorPlatform.numFrequencyBins"><code class="xref py py-attr docutils literal notranslate"><span class="pre">numFrequencyBins</span></code></a>.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>list</p>
+</dd>
+</dl>
+<div class="admonition-todo admonition" id="index-1">
+<p class="admonition-title">Todo</p>
+<p>Develop more methods for allocating <cite>disruption tokens</cite> other
+than random placement into frequency bins.</p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="acme.platforms.DisruptorPlatform.DisruptorPlatform.step">
+<code class="descname">step</code><span class="sig-paren">(</span><em>deltaT</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/acme/platforms/DisruptorPlatform.html#DisruptorPlatform.step"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#acme.platforms.DisruptorPlatform.DisruptorPlatform.step" title="Permalink to this definition">¶</a></dt>
+<dd><p>Advance the platform’s position, velocity, and acceleration by
+<code class="docutils literal notranslate"><span class="pre">deltaT</span></code> seconds.
+Reset the number of <cite>disruption tokens</cite> available if a new
+time epoch has been reached.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>deltaT</strong> (<em>float</em>) – The number of seconds to advance the platform by.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<p><em>Section author: Kevin Lorenz &lt;<a class="reference external" href="mailto:kevin&#46;lorenz&#37;&#52;&#48;nrl&#46;navy&#46;mil">kevin<span>&#46;</span>lorenz<span>&#64;</span>nrl<span>&#46;</span>navy<span>&#46;</span>mil</a>&gt;</em></p>
+<p><em>Code author: Kevin Lorenz &lt;<a class="reference external" href="mailto:kevin&#46;lorenz&#37;&#52;&#48;nrl&#46;navy&#46;mil">kevin<span>&#46;</span>lorenz<span>&#64;</span>nrl<span>&#46;</span>navy<span>&#46;</span>mil</a>&gt;</em></p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="coordinators.html" class="btn btn-neutral float-right" title="4.2. Communications Coordinator" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../api.html" class="btn btn-neutral float-left" title="4. Application Programming Interface (API)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

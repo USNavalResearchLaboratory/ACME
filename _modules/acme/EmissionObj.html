@@ -1,0 +1,335 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>acme.EmissionObj &mdash; Abstract Communications Modeling Environment 1.0.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../_static/language_data.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Abstract Communications Modeling Environment
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../distribution.html">1. Distribution and Release Information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../license.html">2. License Information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../readme.html">3. Introduction and Description</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html">4. Application Programming Interface (API)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../documentation.html">5. Documentation</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Abstract Communications Modeling Environment</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>acme.EmissionObj</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for acme.EmissionObj</h1><div class="highlight"><pre>
+<div class="viewcode-block" id="EmissionObj"><a class="viewcode-back" href="../../api/emissions.html#acme.EmissionObj.EmissionObj">[docs]</a><span></span><span class="k">class</span> <span class="nc">EmissionObj</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Abstract class for any unit of information to be emitted.</span>
+<span class="sd">    </span>
+<span class="sd">    Super-class for all emission objects to be transmitted by any </span>
+<span class="sd">    `Platform`, whether a :class:`.CommsPlatform` or </span>
+<span class="sd">    :class:`.DisruptorPlatform`.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    sourceID : any</span>
+<span class="sd">        The identification attribute :attr:`.id` of the source </span>
+<span class="sd">        :class:`.Platform`.</span>
+<span class="sd">    sourceType : int</span>
+<span class="sd">        The integer indicating the type of source platform.</span>
+
+<span class="sd">        ============== ===========================</span>
+<span class="sd">        ``sourceType`` Description</span>
+<span class="sd">        ============== ===========================</span>
+<span class="sd">        0              :class:`.CommsPlatform`</span>
+<span class="sd">        1              :class:`.DisruptorPlatform`</span>
+<span class="sd">        ============== ===========================</span>
+
+<span class="sd">    destID : any</span>
+<span class="sd">        The identification attribute :attr:`.id` of the destination </span>
+<span class="sd">        :class:`.CommsPlatform`.</span>
+<span class="sd">    time : float</span>
+<span class="sd">        The time at which this object was created and placed into a </span>
+<span class="sd">        platform&#39;s transmit queue.</span>
+<span class="sd">    emissionTime : float</span>
+<span class="sd">        The time at which this object was placed into a frequency bin </span>
+<span class="sd">        in the :class:`.Environment`.</span>
+<span class="sd">    freqBin : int</span>
+<span class="sd">        The frequency bin index in which this object is placed in the </span>
+<span class="sd">        :class:`.Environment`.  Number is in the range [0, :attr:`~.Environment.numFrequencyBins`-1].</span>
+<span class="sd">    position : numpy.ndarray</span>
+<span class="sd">        The position of the platform (:attr:`.pos`) at the time this </span>
+<span class="sd">        object was placed in the :class:`.Environment`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="EmissionObj.__init__"><a class="viewcode-back" href="../../api/emissions.html#acme.EmissionObj.EmissionObj.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span> <span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">theSourceID</span><span class="p">,</span> <span class="n">theDestID</span><span class="p">,</span> <span class="n">theTime</span> <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        theSourceID : any</span>
+<span class="sd">            The identification attribute :attr:`.id` of the source </span>
+<span class="sd">            :class:`.Platform`.</span>
+<span class="sd">        theDestID : any</span>
+<span class="sd">            The identification attribute :attr:`.id` of the </span>
+<span class="sd">            destination :class:`.CommsPlatform`.</span>
+<span class="sd">        theTime : float</span>
+<span class="sd">            The time at which this object was created.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># Make this an Abstract class (cannot instantiate)</span>
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="ow">is</span> <span class="n">EmissionObj</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;This is an abstract class and cannot be instantiated directly.&#39;</span><span class="p">)</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">sourceID</span> <span class="o">=</span> <span class="n">theSourceID</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">destID</span> <span class="o">=</span> <span class="n">theDestID</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">time</span> <span class="o">=</span> <span class="n">theTime</span>         <span class="c1"># Creation time</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">emissionTime</span> <span class="o">=</span> <span class="kc">None</span>    <span class="c1"># Time object is emitted into Environment (will be updated by Environment)</span>
+
+        <span class="c1"># Will be populated later by CommsCoordinator or DisruptorPlatform</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">freqBin</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">position</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="c1"># Assign source platform type</span>
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="ow">is</span> <span class="n">Packet</span> <span class="ow">or</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="ow">is</span> <span class="n">AckPacket</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sourceType</span> <span class="o">=</span> <span class="mi">0</span>     <span class="c1"># This indicates CommsPlatform</span>
+        <span class="k">elif</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="ow">is</span> <span class="n">DisruptionToken</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sourceType</span> <span class="o">=</span> <span class="mi">1</span>     <span class="c1"># This indicates DisruptorPlatform</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;Unknown emission type.&#39;</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="Packet"><a class="viewcode-back" href="../../api/emissions.html#acme.EmissionObj.Packet">[docs]</a><span class="k">class</span> <span class="nc">Packet</span><span class="p">(</span><span class="n">EmissionObj</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Implements an `information unit` to be transmitted by any </span>
+<span class="sd">    :class:`.CommsPlatform` to another :class:`.CommsPlatform`.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    payload : any</span>
+<span class="sd">        The user data payload to be transmitted.</span>
+<span class="sd">    msgID : int</span>
+<span class="sd">        The message ID number for this `information unit`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="Packet.__init__"><a class="viewcode-back" href="../../api/emissions.html#acme.EmissionObj.Packet.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span> <span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">theSourceID</span><span class="p">,</span> <span class="n">theDestID</span><span class="p">,</span> <span class="n">theTime</span><span class="p">,</span> <span class="n">thePayload</span><span class="p">,</span> <span class="n">theMsgID</span> <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        theSourceID : any</span>
+<span class="sd">            The identification attribute :attr:`.id` of the source </span>
+<span class="sd">            :class:`.Platform`.</span>
+<span class="sd">        theDestID : any</span>
+<span class="sd">            The identification attribute :attr:`.id` of the </span>
+<span class="sd">            destination :class:`.CommsPlatform`.</span>
+<span class="sd">        theTime : float</span>
+<span class="sd">            The time at which this object was created.</span>
+<span class="sd">        thePayload : any</span>
+<span class="sd">            The user data to be transmitted.</span>
+<span class="sd">        theMsgID : int</span>
+<span class="sd">            The message ID number for this object.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span> <span class="n">theSourceID</span><span class="p">,</span> <span class="n">theDestID</span><span class="p">,</span> <span class="n">theTime</span> <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">payload</span> <span class="o">=</span> <span class="n">thePayload</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">msgID</span> <span class="o">=</span> <span class="n">theMsgID</span></div></div>
+
+
+<div class="viewcode-block" id="AckPacket"><a class="viewcode-back" href="../../api/emissions.html#acme.EmissionObj.AckPacket">[docs]</a><span class="k">class</span> <span class="nc">AckPacket</span><span class="p">(</span><span class="n">Packet</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Implements a specific type of information unit to be transmitted</span>
+<span class="sd">    by a :class:`.CommsPlatform` to acknowledge the receipt of a </span>
+<span class="sd">    :class:`Packet` from another :class:`.CommsPlatform`.</span>
+<span class="sd">    </span>
+<span class="sd">    The :attr:`~EmissionObj.destID` and :attr:`~Packet.payload` of </span>
+<span class="sd">    this object are the :attr:`~EmissionObj.sourceID` and </span>
+<span class="sd">    :attr:`~Packet.msgID`, respectively, of the :class:`Packet` that </span>
+<span class="sd">    was successfully received.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="k">def</span> <span class="nf">__init__</span> <span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">theSourceID</span><span class="p">,</span> <span class="n">theDestID</span><span class="p">,</span> <span class="n">theTime</span><span class="p">,</span> <span class="n">thePayload</span><span class="p">,</span> <span class="n">theMsgID</span> <span class="p">):</span>
+        <span class="c1"># For acknowledgement packets, the payload is the message ID of the Packet that is being acknowledged</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span> <span class="n">theSourceID</span><span class="p">,</span> <span class="n">theDestID</span><span class="p">,</span> <span class="n">theTime</span><span class="p">,</span> <span class="n">thePayload</span><span class="p">,</span> <span class="n">theMsgID</span> <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="DisruptionToken"><a class="viewcode-back" href="../../api/emissions.html#acme.EmissionObj.DisruptionToken">[docs]</a><span class="k">class</span> <span class="nc">DisruptionToken</span><span class="p">(</span><span class="n">EmissionObj</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Implements a disruption token to be transmitted by a </span>
+<span class="sd">    :class:`.DisruptorPlatform` to interfere with a :class:`Packet` </span>
+<span class="sd">    and cause it to not be delivered.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="k">def</span> <span class="nf">__init__</span> <span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">theSourceID</span><span class="p">,</span> <span class="n">theDestID</span><span class="p">,</span> <span class="n">theTime</span> <span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span> <span class="n">theSourceID</span><span class="p">,</span> <span class="n">theDestID</span><span class="p">,</span> <span class="n">theTime</span> <span class="p">)</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

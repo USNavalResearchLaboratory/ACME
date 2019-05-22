@@ -1,0 +1,372 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>4.2. Communications Coordinator &mdash; Abstract Communications Modeling Environment 1.0.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="4.3. RF Environment" href="environment.html" />
+    <link rel="prev" title="4.1. Platforms / Agents" href="platforms.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Abstract Communications Modeling Environment
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../distribution.html">1. Distribution and Release Information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">2. License Information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../readme.html">3. Introduction and Description</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../api.html">4. Application Programming Interface (API)</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="platforms.html">4.1. Platforms / Agents</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">4.2. Communications Coordinator</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="environment.html">4.3. RF Environment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="emissions.html">4.4. Emission Objects</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../documentation.html">5. Documentation</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Abstract Communications Modeling Environment</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../api.html">4. Application Programming Interface (API)</a> &raquo;</li>
+        
+      <li>4.2. Communications Coordinator</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/api/coordinators.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="communications-coordinator">
+<h1>4.2. Communications Coordinator<a class="headerlink" href="#communications-coordinator" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+</div>
+<span class="target" id="module-acme.coordinators.CommsCoordinator"></span><dl class="class">
+<dt id="acme.coordinators.CommsCoordinator.CommsCoordinator">
+<em class="property">class </em><code class="descclassname">acme.coordinators.CommsCoordinator.</code><code class="descname">CommsCoordinator</code><span class="sig-paren">(</span><em>thePlatforms</em>, <em>theNumFrequencyBins</em>, <em>theMediumAccessMethod</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/acme/coordinators/CommsCoordinator.html#CommsCoordinator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#acme.coordinators.CommsCoordinator.CommsCoordinator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Implements the medium access control (MAC) layer.</p>
+<p>Coordinates incoming units of information from multiple
+<cite>Communications Platforms</cite> and decides how to place these
+information units into the <cite>RF Environment</cite> for transmission.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>This class is typically instantiated automatically by the
+<a class="reference internal" href="environment.html#acme.Environment.Environment" title="acme.Environment.Environment"><code class="xref py py-class docutils literal notranslate"><span class="pre">Environment</span></code></a> and is generally not instantiated directly
+by the user.</p>
+</div>
+<dl class="attribute">
+<dt id="acme.coordinators.CommsCoordinator.CommsCoordinator.platforms">
+<code class="descname">platforms</code><a class="headerlink" href="#acme.coordinators.CommsCoordinator.CommsCoordinator.platforms" title="Permalink to this definition">¶</a></dt>
+<dd><p>The tuple containing the <cite>Communications Platforms</cite> that this
+Coordinator manages.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>tuple of <a class="reference internal" href="platforms.html#acme.platforms.CommsPlatform.CommsPlatform" title="acme.platforms.CommsPlatform.CommsPlatform"><code class="xref py py-class docutils literal notranslate"><span class="pre">CommsPlatform</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="acme.coordinators.CommsCoordinator.CommsCoordinator.platformIDs">
+<code class="descname">platformIDs</code><a class="headerlink" href="#acme.coordinators.CommsCoordinator.CommsCoordinator.platformIDs" title="Permalink to this definition">¶</a></dt>
+<dd><p>The list of the property <a class="reference internal" href="platforms.html#acme.platforms.Platform.Platform.id" title="acme.platforms.Platform.Platform.id"><code class="xref py py-attr docutils literal notranslate"><span class="pre">id</span></code></a> from all <cite>Communications
+Platforms</cite> in <a class="reference internal" href="#acme.coordinators.CommsCoordinator.CommsCoordinator.platforms" title="acme.coordinators.CommsCoordinator.CommsCoordinator.platforms"><code class="xref py py-attr docutils literal notranslate"><span class="pre">platforms</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="acme.coordinators.CommsCoordinator.CommsCoordinator.numPlatforms">
+<code class="descname">numPlatforms</code><a class="headerlink" href="#acme.coordinators.CommsCoordinator.CommsCoordinator.numPlatforms" title="Permalink to this definition">¶</a></dt>
+<dd><p>The number of <cite>Communication Platforms</cite> controlled by this
+entity (i.e., the length of <a class="reference internal" href="#acme.coordinators.CommsCoordinator.CommsCoordinator.platforms" title="acme.coordinators.CommsCoordinator.CommsCoordinator.platforms"><code class="xref py py-attr docutils literal notranslate"><span class="pre">platforms</span></code></a>).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="acme.coordinators.CommsCoordinator.CommsCoordinator.numFrequencyBins">
+<code class="descname">numFrequencyBins</code><a class="headerlink" href="#acme.coordinators.CommsCoordinator.CommsCoordinator.numFrequencyBins" title="Permalink to this definition">¶</a></dt>
+<dd><p>The number of frequency bins in the <a class="reference internal" href="environment.html#acme.Environment.Environment" title="acme.Environment.Environment"><code class="xref py py-class docutils literal notranslate"><span class="pre">Environment</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="acme.coordinators.CommsCoordinator.CommsCoordinator.mac">
+<code class="descname">mac</code><a class="headerlink" href="#acme.coordinators.CommsCoordinator.CommsCoordinator.mac" title="Permalink to this definition">¶</a></dt>
+<dd><p>The medium access control method.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>{‘rr’, ‘tdma’, ‘fdma’}</p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="admonition-todo admonition" id="index-0">
+<p class="admonition-title">Todo</p>
+<p>Implement more <cite>medium access control</cite> protocols.</p>
+</div>
+<div class="admonition-todo admonition" id="index-1">
+<p class="admonition-title">Todo</p>
+<p>Implement routing mechanism so that packets may be delivered via
+relay platforms instead of only point-to-point links.</p>
+</div>
+<dl class="method">
+<dt id="acme.coordinators.CommsCoordinator.CommsCoordinator.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>thePlatforms</em>, <em>theNumFrequencyBins</em>, <em>theMediumAccessMethod</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/acme/coordinators/CommsCoordinator.html#CommsCoordinator.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#acme.coordinators.CommsCoordinator.CommsCoordinator.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>thePlatforms</strong> (tuple of <a class="reference internal" href="platforms.html#acme.platforms.CommsPlatform.CommsPlatform" title="acme.platforms.CommsPlatform.CommsPlatform"><code class="xref py py-class docutils literal notranslate"><span class="pre">CommsPlatform</span></code></a>) – Tuple containing the <cite>Communications Platforms</cite> that this
+Coordinator will manage.</p></li>
+<li><p><strong>theNumFrequencyBins</strong> (<em>int</em>) – The number of frequency bins in the <a class="reference internal" href="environment.html#acme.Environment.Environment" title="acme.Environment.Environment"><code class="xref py py-class docutils literal notranslate"><span class="pre">Environment</span></code></a>.</p></li>
+<li><p><strong>theMediumAccessMethod</strong> (<em>{'rr'</em><em>, </em><em>'tdma'</em><em>, </em><em>'fdma'}</em>) – <p>The medium access control method.</p>
+<table class="docutils align-center">
+<colgroup>
+<col style="width: 15%" />
+<col style="width: 85%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>String</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>rr</p></td>
+<td><p>round robin</p></td>
+</tr>
+<tr class="row-odd"><td><p>tdma</p></td>
+<td><p>time division multiple access</p></td>
+</tr>
+<tr class="row-even"><td><p>fdma</p></td>
+<td><p>frequency division multiple access</p></td>
+</tr>
+</tbody>
+</table>
+</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="acme.coordinators.CommsCoordinator.CommsCoordinator.step">
+<code class="descname">step</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/acme/coordinators/CommsCoordinator.html#CommsCoordinator.step"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#acme.coordinators.CommsCoordinator.CommsCoordinator.step" title="Permalink to this definition">¶</a></dt>
+<dd><p>Obtain the next set of information units from all entities in
+<a class="reference internal" href="#acme.coordinators.CommsCoordinator.CommsCoordinator.platforms" title="acme.coordinators.CommsCoordinator.CommsCoordinator.platforms"><code class="xref py py-attr docutils literal notranslate"><span class="pre">platforms</span></code></a> for the current time step.
+Intended to be called once per time step.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><strong>txPackets</strong> – List of <a class="reference internal" href="emissions.html#acme.EmissionObj.Packet" title="acme.EmissionObj.Packet"><code class="xref py py-class docutils literal notranslate"><span class="pre">Packet</span></code></a> corresponding to which information
+units have been placed in which frequency bins.
+Each element of the list is either <code class="docutils literal notranslate"><span class="pre">None</span></code> or contains a
+single <a class="reference internal" href="emissions.html#acme.EmissionObj.Packet" title="acme.EmissionObj.Packet"><code class="xref py py-class docutils literal notranslate"><span class="pre">Packet</span></code></a>.
+List has length <a class="reference internal" href="#acme.coordinators.CommsCoordinator.CommsCoordinator.numFrequencyBins" title="acme.coordinators.CommsCoordinator.CommsCoordinator.numFrequencyBins"><code class="xref py py-attr docutils literal notranslate"><span class="pre">numFrequencyBins</span></code></a>.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>list of <a class="reference internal" href="emissions.html#acme.EmissionObj.Packet" title="acme.EmissionObj.Packet"><code class="xref py py-class docutils literal notranslate"><span class="pre">Packet</span></code></a></p>
+</dd>
+</dl>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>This method is typically called automatically by the
+<a class="reference internal" href="environment.html#acme.Environment.Environment" title="acme.Environment.Environment"><code class="xref py py-class docutils literal notranslate"><span class="pre">Environment</span></code></a> and is generally not called directly by
+the user.</p>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<p><em>Section author: Kevin Lorenz &lt;<a class="reference external" href="mailto:kevin&#46;lorenz&#37;&#52;&#48;nrl&#46;navy&#46;mil">kevin<span>&#46;</span>lorenz<span>&#64;</span>nrl<span>&#46;</span>navy<span>&#46;</span>mil</a>&gt;</em></p>
+<p><em>Code author: Kevin Lorenz &lt;<a class="reference external" href="mailto:kevin&#46;lorenz&#37;&#52;&#48;nrl&#46;navy&#46;mil">kevin<span>&#46;</span>lorenz<span>&#64;</span>nrl<span>&#46;</span>navy<span>&#46;</span>mil</a>&gt;</em></p>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="environment.html" class="btn btn-neutral float-right" title="4.3. RF Environment" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="platforms.html" class="btn btn-neutral float-left" title="4.1. Platforms / Agents" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
