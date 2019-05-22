@@ -1,0 +1,27 @@
+language: python
+
+#install:
+#  - pip install -r requirements.txt
+
+script:
+  - python -m unittest discover -s tests
+
+script:
+  # Use Sphinx to make the html docs
+  - cd docs
+  - make html
+  - cd ..
+  # Tell GitHub not to use jekyll to compile the docs
+  - touch docs/build/html/.nojekyll
+
+# Tell Travis CI to copy the documentation to the gh-pages branch of
+# your GitHub repository.
+deploy:
+  provider: pages
+  skip_cleanup: true
+  github_token: $GITHUB_TOKEN  # Set in the settings page of your repository, as a secure variable
+  keep_history: true
+  on:
+    branch: master
+  local_dir: docs/build/html
+#  committer_from_gh: true
